@@ -1,0 +1,283 @@
+.navbar {
+  background: white;
+  color: #0d47a1;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.navbar-logo {
+  width: 100px;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links li a,
+.nav-links li span {
+  text-decoration: none;
+  color: #0d47a1;
+  font-weight: 500;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.nav-links li a:hover,
+.nav-links li span:hover {
+  color: #1565c0;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  width: 220px;
+  overflow: hidden;
+  animation: dropdownFade 0.3s ease;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.dropdown-menu li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #0d47a1;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-menu li:hover {
+  background: #e3f2fd;
+}
+
+.quote-btn {
+  background: #0d47a1;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.quote-btn:hover {
+  background: #1565c0;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 1.8rem;
+  color: #0d47a1;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  left: -100%;
+  top: 0;
+  width: 70%;
+  height: 100vh;
+  background: white;
+  color: #0d47a1;
+  transition: all 0.4s ease-in-out;
+  padding: 20px;
+  z-index: 2000;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar li {
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+.sidebar li a {
+  text-decoration: none;
+  color: #0d47a1;
+  font-weight: 500;
+}
+
+.sidebar li a:hover {
+  color: #1565c0;
+}
+
+.sidebar-section span {
+  font-weight: 600;
+  display: block;
+  cursor: pointer;
+  color: #0d47a1;
+}
+
+.sidebar-section ul {
+  margin-top: 6px;
+  margin-left: 12px;
+  animation: fadeIn 0.3s ease;
+}
+
+.sidebar-section ul li {
+  color: #1565c0;
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(5px);
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1001;
+}
+
+.quote-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 420px;
+  padding: 30px;
+  position: relative;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #0d47a1;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  text-align: center;
+  color: #0d47a1;
+  margin-bottom: 18px;
+  font-size: 1.5rem;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content input,
+.modal-content textarea {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: #0d47a1;
+  box-shadow: 0 0 4px rgba(13, 71, 161, 0.4);
+}
+
+.modal-content button {
+  background: #0d47a1;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.modal-content button:hover {
+  background: #1565c0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  .menu-icon {
+    display: block;
+  }
+}
