@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import QuoteForm from "../QuoteForm/QuoteForm";
 import {
   FaBars,
   FaTimes,
@@ -18,11 +19,11 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  
   const [openSection, setOpenSection] = useState("");
-
+  const [showQuote, setShowQuote] = useState(false);
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const toggleQuoteForm = () => setIsQuoteOpen(!isQuoteOpen);
+  const toggleQuoteForm = () => setShowQuote(!showQuote);
   const toggleSection = (section) =>
     setOpenSection(openSection === section ? "" : section);
 
@@ -187,26 +188,9 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {isQuoteOpen && <div className="overlay"></div>}
+      {showQuote && <QuoteForm setShowQuote={setShowQuote}/>}
 
-      {isQuoteOpen && (
-        <div className="quote-modal">
-          <div className="modal-content">
-            <button className="close-modal" onClick={toggleQuoteForm}>
-              <FaTimes />
-            </button>
-            <h2>Free Quote</h2>
-            <form>
-              <input type="text" placeholder="Name" />
-              <input type="email" placeholder="Email" />
-              <input type="text" placeholder="Subject" />
-              <input type="tel" placeholder="Phone Number" />
-              <textarea placeholder="Message" rows="3"></textarea>
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </div>
-      )}
+      
     </>
   );
 };

@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
+import QuoteForm from "../../components/QuoteForm/QuoteForm";
 import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 
 const Home = () => {
+  const titles = ["App Development", "Web Development", "Cloud Services", "Marketing"];
+  const [currentTitle, setCurrentTitle] = useState(0);
+  const [showQuote, setShowQuote] = useState(false);
+
+  // Change title every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTitle((prev) => (prev + 1) % titles.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Show quote form after 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowQuote(true), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section className="home-section" id="home">
       <div className="home-container">
         {/* Text Section */}
         <div className="home-text">
           <h1 className="home-heading">
-            Best <span>Web Development</span> <br />
+            Best{" "}
+            <span key={titles[currentTitle]} className="changing-text">
+              {titles[currentTitle]}
+            </span>
+            <br />
             Company in Anantapur
           </h1>
 
@@ -28,7 +51,9 @@ const Home = () => {
             <a href="#"><FaYoutube /></a>
           </div>
 
-          <button className="blue-btn">Get a Free Quote</button>
+          <button className="blue-btn" onClick={() => setShowQuote(true)}>
+            Get a Free Quote
+          </button>
         </div>
 
         {/* Media Section */}
@@ -62,6 +87,9 @@ const Home = () => {
           />
         </div>
       </div>
+
+      {/* Quote Form Popup */}
+      {showQuote && <QuoteForm setShowQuote={setShowQuote} />}
     </section>
   );
 };
