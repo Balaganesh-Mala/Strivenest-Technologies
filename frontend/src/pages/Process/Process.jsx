@@ -8,32 +8,32 @@ import "slick-carousel/slick/slick-theme.css";
 const steps = [
   {
     title: "Step 1: Requirement",
-    img: "https://ik.imagekit.io/izqq5ffwt/requirement.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/2082303.jpg",
     text: "We start by understanding your business goals, audience, and project scope. Our team conducts deep research and discussions to gather all necessary details to create a solid foundation for your project."
   },
   {
     title: "Step 2: Agreement",
-    img: "https://ik.imagekit.io/izqq5ffwt/agreement.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/Screenshot%202025-10-30%20092306.png",
     text: "Once the requirements are finalized, we establish a transparent agreement covering the project scope, timeline, and deliverables — ensuring mutual clarity and trust."
   },
   {
     title: "Step 3: UI & UX Design",
-    img: "https://ik.imagekit.io/izqq5ffwt/uiux.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/5881573.jpg",
     text: "Our design team crafts intuitive, engaging, and modern UI/UX layouts to ensure your product not only looks great but also delivers a seamless user experience."
   },
   {
     title: "Step 4: Development",
-    img: "https://ik.imagekit.io/izqq5ffwt/development.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/4380747.jpg",
     text: "We build scalable, high-performance web and mobile applications using modern technologies while following clean coding standards."
   },
   {
     title: "Step 5: Testing",
-    img: "https://ik.imagekit.io/izqq5ffwt/testing.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/Screenshot%202025-10-30%20093224.png",
     text: "Our QA experts conduct rigorous testing to identify and fix bugs, ensuring top-quality performance, speed, and security before deployment."
   },
   {
     title: "Step 6: Deployment & Live",
-    img: "https://ik.imagekit.io/izqq5ffwt/deployment.png",
+    img: "https://ik.imagekit.io/izqq5ffwt/7090038.jpg",
     text: "We deploy your project smoothly to your preferred environment and monitor the live performance, ensuring stability and ongoing support."
   }
 ];
@@ -45,21 +45,22 @@ const Process = () => {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 5000,
-    speed: 800,
+    autoplaySpeed: 4000,
+    speed: 700,
     slidesToShow: 3,
     slidesToScroll: 1,
     centerMode: true,
     centerPadding: "0px",
     pauseOnHover: true,
-    beforeChange: (oldIndex, newIndex) => setCurrent(newIndex),
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
+    beforeChange: (_, newIndex) => setCurrent(newIndex),
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 2
+          slidesToShow: 2,
+          centerMode: false
         }
       },
       {
@@ -95,15 +96,15 @@ const Process = () => {
   );
 };
 
-// Custom Arrows
-function SampleNextArrow({ onClick }) {
+function NextArrow({ onClick }) {
   return (
     <div className="arrow next" onClick={onClick}>
       <FaArrowRight />
     </div>
   );
 }
-function SamplePrevArrow({ onClick }) {
+
+function PrevArrow({ onClick }) {
   return (
     <div className="arrow prev" onClick={onClick}>
       <FaArrowLeft />

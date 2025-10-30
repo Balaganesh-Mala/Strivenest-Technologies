@@ -33,7 +33,7 @@ const Testimonials = () => {
     dots: true,
     infinite: true,
     autoplay: true,
-    autoplaySpeed: 5000,
+    autoplaySpeed: 4000,
     speed: 800,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -46,7 +46,7 @@ const Testimonials = () => {
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 1 }
+        settings: { slidesToShow: 1, arrows: false }
       }
     ]
   };
@@ -57,13 +57,14 @@ const Testimonials = () => {
       <p className="testimonial-subtitle">
         Our satisfied clients share their success stories and experiences with us.
       </p>
-
       <div className="testimonial-slider">
         <Slider {...settings}>
           {testimonials.map((item, i) => (
             <div className="testimonial-card" key={i}>
               <div className="testimonial-text">
-                <span className="quote-mark"><img src="https://ik.imagekit.io/izqq5ffwt/001-quote.png" alt=""/></span>
+                <span className="quote-mark">
+                  <img src="https://ik.imagekit.io/izqq5ffwt/001-quote.png" alt="" />
+                </span>
                 <p>{item.text}</p>
               </div>
               <div className="testimonial-footer">
