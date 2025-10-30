@@ -1,7 +1,7 @@
 .home-section {
   width: 100%;
   background-color: #fff;
-  padding: 100px 8%;
+  padding: 100px 8% 10px 8%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,7 +83,7 @@
 }
 
 .side-img {
-  width: 120px;
+  width: 180px;
   height: auto;
   object-fit: contain;
 }
@@ -108,7 +108,7 @@
   top: 7%;
   left: 5%;
   width: 90%;
-  height: 86%;
+  height: 87%;
   border-radius: 30px;
   object-fit: cover;
   z-index: 1;
@@ -166,13 +166,9 @@
   }
 
   .side-img {
-    width: 100px;
+    display: none;
   }
 
-  .home-media {
-    flex-direction: column;
-    gap: 20px;
-  }
 
   .phone-wrapper {
     width: 190px;

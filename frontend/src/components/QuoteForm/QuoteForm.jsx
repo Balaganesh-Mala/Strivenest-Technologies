@@ -18,6 +18,7 @@ const QuoteForm = ({ setShowQuote }) => {
         <form className="quote-form">
           <input type="text" placeholder="Your Name" id="name" required />
           <input type="email" placeholder="Your Email" id="email" required />
+          <input type="text" placeholder="Your Phone Number" id="phoneNumber" required />
           <div className="form-group">
             <label htmlFor="service">Service Required</label>
             <div className="input-wrapper">

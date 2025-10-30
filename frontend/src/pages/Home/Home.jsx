@@ -74,7 +74,7 @@ const Home = () => {
               playsInline
             ></video>
             <img
-              src="https://ik.imagekit.io/izqq5ffwt/_Pngtree_blank%20smartphone%20screen%20template_20714056.png?updatedAt=1761795602256"
+              src="https://ik.imagekit.io/izqq5ffwt/download.png?updatedAt=1761819335957"
               alt="Phone Frame"
               className="phone-frame"
             />

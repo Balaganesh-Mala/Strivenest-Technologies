@@ -9,22 +9,22 @@ const testimonials = [
   {
     name: "MOTHIRAM N",
     text: "We had an incredible experience working with Analogue IT Solutions on the development of our Kickff app. From start to finish, their team showcased exceptional technical expertise, attention to detail, and a deep understanding of our vision.",
-    img: "https://ik.imagekit.io/izqq5ffwt/profile1.png"
+    img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
     name: "Smruti Behura",
     text: "I approached Analogue IT Solutions for mobile app development for my business, and I am truly impressed with the results. Their team not only understood my requirements clearly but also provided valuable suggestions to enhance the functionality and design.",
-    img: "https://ik.imagekit.io/izqq5ffwt/profile2.png"
+    img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
     name: "Vijay Kumar Reddy",
     text: "If you're searching for a reliable, highly skilled, and innovative development team, look no further than Analogue IT Solutions. Their expertise and commitment to excellence make them the ideal partner for impactful projects.",
-    img: "https://ik.imagekit.io/izqq5ffwt/profile3.png"
+    img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
     name: "Deepika Sharma",
     text: "They delivered beyond our expectations! The design, functionality, and performance were outstanding. The team was very professional, communicative, and dedicated throughout the process.",
-    img: "https://ik.imagekit.io/izqq5ffwt/profile4.png"
+    img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   }
 ];
 
@@ -53,9 +53,9 @@ const Testimonials = () => {
 
   return (
     <section className="testimonials-section">
-      <h2 className="testimonial-title">Our Testimonials</h2>
+      <h2 className="testimonial-title">What Our Clients Say</h2>
       <p className="testimonial-subtitle">
-        Our satisfied clients share their success stories and experiences with us.
+        Here’s what people are saying about our service.
       </p>
       <div className="testimonial-slider">
         <Slider {...settings}>
