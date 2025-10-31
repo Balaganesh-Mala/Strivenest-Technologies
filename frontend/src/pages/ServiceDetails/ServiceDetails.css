@@ -1,0 +1,47 @@
+.service-details {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.service-banner {
+  position: relative;
+}
+
+.service-banner img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  
+}
+
+.service-banner h1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: 2.5rem;
+}
+
+.service-desc {
+  max-width: 900px;
+  margin: 40px auto;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.service-projects {
+  margin: 50px auto;
+  max-width: 1000px;
+}
+
+.service-projects h2 {
+  margin-bottom: 20px;
+}
+
+.project-slide img {
+  width: 100%;
+  border-radius: 10px;
+  height: 250px;
+  object-fit: cover;
+}

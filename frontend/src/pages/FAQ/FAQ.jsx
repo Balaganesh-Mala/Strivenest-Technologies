@@ -6,57 +6,58 @@ const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const faqs = [
-    {
-      question: "What services does Strivenest provide?",
-      answer:
-        "Strivenest offers web and mobile app development, AI-based solutions, and digital marketing strategies designed to accelerate digital transformation for businesses.",
-    },
-    {
-      question: "How can I request a project quote?",
-      answer:
-        "You can request a quote by clicking the 'Get Quote' button on the homepage or by reaching out via our contact form.",
-    },
-    {
-      question: "Do you offer custom software solutions?",
-      answer:
-        "Yes, we specialize in building tailor-made software solutions based on your unique business requirements.",
-    },
-    {
-      question: "What technologies does your team work with?",
-      answer:
-        "Our team works with modern tech stacks including React, Node.js, Python, MongoDB, Flutter, and AI frameworks.",
-    },
-    {
-      question: "Do you provide maintenance and support?",
-      answer:
-        "Yes, we provide post-launch support, performance monitoring, and regular updates to ensure smooth operation.",
-    },
-    {
-      question: "Can you redesign my existing website?",
-      answer:
-        "Absolutely! We offer complete website redesign services to improve design, performance, and user experience.",
-    },
-    {
-      question: "How long does a typical project take?",
-      answer:
-        "Timelines vary depending on complexity. Most small to mid-sized projects are completed within 4–8 weeks.",
-    },
-    {
-      question: "Do you work with startups and small businesses?",
-      answer:
-        "Yes, we work with startups, small businesses, and large enterprises alike, providing scalable and cost-effective solutions.",
-    },
-    {
-      question: "Where is your team located?",
-      answer:
-        "Our core team operates remotely, allowing us to collaborate with clients across different countries and time zones.",
-    },
-    {
-      question: "How can I contact your support team?",
-      answer:
-        "You can contact us via email, our website’s contact form, or directly through our WhatsApp support button.",
-    },
-  ];
+  {
+    question: "What services does Strivenest Technologies offer?",
+    answer:
+      "Strivenest Technologies provides a wide range of IT services including Web Development, Mobile App Development, Cloud Solutions, Digital Marketing, Branding, and AI-based automation solutions. We help businesses grow with modern and scalable digital products.",
+  },
+  {
+    question: "What technologies does your team specialize in?",
+    answer:
+      "Our team works with the latest and most in-demand technologies such as React.js, Node.js, Python, JavaScript, Flutter, React Native, MongoDB, MySQL, and cloud platforms like AWS, Google Cloud, and Docker.",
+  },
+  {
+    question: "How does Strivenest Technologies ensure quality in its projects?",
+    answer:
+      "We follow a strict quality assurance process that includes detailed testing, code reviews, and performance checks. Every project undergoes multiple review phases to ensure it meets our high standards of quality and reliability.",
+  },
+  {
+    question: "Can Strivenest Technologies handle both small and large-scale projects?",
+    answer:
+      "Yes, our team is experienced in managing projects of all sizes — from small business websites to enterprise-grade applications. We provide flexible solutions tailored to your project’s scope and goals.",
+  },
+  {
+    question: "How do you ensure data security and privacy?",
+    answer:
+      "We prioritize data protection through secure hosting, encrypted communications, and regular audits. Our systems follow best practices in cybersecurity to ensure your business data remains safe and confidential.",
+  },
+  {
+    question: "What industries do you serve?",
+    answer:
+      "We serve a wide range of industries, including e-commerce, healthcare, finance, education, logistics, and more. Each project is customized to meet the unique needs and challenges of that specific industry.",
+  },
+  {
+    question: "What makes Strivenest Technologies stand out from other IT service providers?",
+    answer:
+      "Our focus on innovation, transparency, and client satisfaction sets us apart. We combine technical expertise with creative thinking to deliver long-term, impactful solutions for our clients.",
+  },
+  {
+    question: "What is your project development process?",
+    answer:
+      "Our process includes Requirement Analysis, UI/UX Design, Development, Testing, Deployment, and Post-launch Support. Each stage is handled with precision to ensure a smooth and successful delivery.",
+  },
+  {
+    question: "How do you ensure customer satisfaction?",
+    answer:
+      "We maintain continuous communication with clients throughout the project, provide regular updates, and ensure all deliverables meet their expectations. Our support continues even after project completion.",
+  },
+  {
+    question: "What is the pricing structure for your services?",
+    answer:
+      "Our pricing is flexible and depends on the project’s size, complexity, and timeline. We offer both fixed-cost and hourly engagement models to suit the client’s budget and requirements.",
+  },
+];
+
 
   const toggleFAQ = (index) => {
     setActiveIndex(activeIndex === index ? null : index);

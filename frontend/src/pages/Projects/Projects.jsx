@@ -85,7 +85,6 @@ const Projects = () => {
               </div>
               <div className="sp-body">
                 <h3>{p.title}</h3>
-                <a href="#" className="sp-link">View Project</a>
               </div>
             </div>
           ))}

@@ -7,23 +7,23 @@ import "slick-carousel/slick/slick-theme.css";
 
 const testimonials = [
   {
-    name: "MOTHIRAM N",
-    text: "We had an incredible experience working with Analogue IT Solutions on the development of our Kickff app. From start to finish, their team showcased exceptional technical expertise, attention to detail, and a deep understanding of our vision.",
+    name: "Suresh Reddy",
+    text: "Strivenest Technologies delivered our project with outstanding quality and professionalism. Their team truly understood our business needs and turned them into a smooth, user-friendly app. Great communication and timely delivery — highly recommended!",
     img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
-    name: "Smruti Behura",
-    text: "I approached Analogue IT Solutions for mobile app development for my business, and I am truly impressed with the results. Their team not only understood my requirements clearly but also provided valuable suggestions to enhance the functionality and design.",
+    name: "Divya Priya",
+    text: "I had a wonderful experience working with Strivenest Technologies. They developed my website exactly the way I wanted, with a modern design and excellent performance. The team is very talented, supportive, and creative throughout the process.",
     img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
-    name: "Vijay Kumar Reddy",
-    text: "If you're searching for a reliable, highly skilled, and innovative development team, look no further than Analogue IT Solutions. Their expertise and commitment to excellence make them the ideal partner for impactful projects.",
+    name: "Chandra Sekhar",
+    text: "The team at Strivenest Technologies in Anantapur went above and beyond to deliver our software project. Their technical knowledge, quick response, and dedication helped us achieve the best results for our business. Truly a professional and trustworthy company!",
     img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   },
   {
-    name: "Deepika Sharma",
-    text: "They delivered beyond our expectations! The design, functionality, and performance were outstanding. The team was very professional, communicative, and dedicated throughout the process.",
+    name: "Bhavani Lakshmi",
+    text: "I am very impressed with the service from Strivenest Technologies. From design to deployment, everything was handled perfectly. They are a great team with a clear focus on quality and client satisfaction. Definitely the best tech company in Anantapur!",
     img: "https://ik.imagekit.io/izqq5ffwt/avatar.jpg"
   }
 ];
