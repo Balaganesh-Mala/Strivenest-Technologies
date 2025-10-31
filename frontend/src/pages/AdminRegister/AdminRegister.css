@@ -1,0 +1,71 @@
+.admin-register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+  padding: 20px;
+}
+
+.admin-register-form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 15px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.admin-register-form h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.admin-register-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.admin-register-form input:focus {
+  border-color: #0052d4;
+}
+
+.admin-register-form button {
+  width: 100%;
+  background: #0052d4;
+  color: white;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.admin-register-form button:hover {
+  background: #003da8;
+}
+
+.message {
+  text-align: center;
+  margin-top: 10px;
+  color: #333;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .admin-register-form {
+    padding: 20px;
+  }
+
+  .admin-register-form h2 {
+    font-size: 20px;
+  }
+}
