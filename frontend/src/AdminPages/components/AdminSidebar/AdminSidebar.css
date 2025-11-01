@@ -77,6 +77,8 @@
 .admin-logout li {
   display: flex;
   align-items: center;
+  padding: 10px;
+  border-radius: 8px;
   gap: 10px;
   color: #ef4444;
   font-weight: 500;

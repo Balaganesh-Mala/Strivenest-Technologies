@@ -23,7 +23,7 @@
   max-width: 750px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
 }
 
 .form-row {
@@ -61,7 +61,7 @@ input,
 select,
 textarea {
   width: 100%;
-  padding: 12px 14px 12px 42px;
+  padding: 12px 14px 12px 42px !important;
   border: 1.5px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;

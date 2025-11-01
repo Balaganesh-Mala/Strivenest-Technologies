@@ -77,7 +77,7 @@ technologies: [
         experiences.
       </p>
 
-      <div className="tech-grid">
+      <div className="tech-grid-card">
         {techList.map((tech) => (
           <div
             key={tech.id}

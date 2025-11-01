@@ -19,7 +19,7 @@ import Dashboard from "./AdminPages/Dashboard/Dashboard.jsx";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
-  return token ? children : <Navigate to="/admin-login" />;
+  return token ? children : <Navigate to="/admin/login" />;
 };
 
 const Layout = ({ children }) => {
@@ -67,9 +67,9 @@ const App = () => {
           <Route
             path="/admin"
             element={
-             <PrivateRoute>
+             
                 <Dashboard/>
-              </PrivateRoute>
+              
               
             }
           />

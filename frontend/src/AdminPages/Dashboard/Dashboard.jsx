@@ -7,6 +7,8 @@ import AdminBlogs from "../components/Blogs/Blogs.jsx";
 import ClientRequests from "../components/ClientRequests/ClientRequests.jsx";
 import Analytics from "../components/Analytics/Analytics.jsx";
 import Settings from "../components/Settings/Settings.jsx";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import {
   LineChart,
   Line,
@@ -24,20 +26,13 @@ import {
 } from "recharts";
 import "./Dashboard.css";
 
+const MySwal = withReactContent(Swal);
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const analyticsData = [
-    { title: "Total Clients", value: "120", color: "#ffb8b8ff" },
-    { title: "Total Projects", value: "85", color: "#6366F1" },
-    { title: "In Progress", value: "24", color: "#e9f50bff" },
-    { title: "Completed", value: "61", color: "#10B981" },
-    { title: "Revenue (This Month)", value: "$45,200", color: "#f63bf3ff" },
-    { title: "Avg. Completion Time", value: "12 Days", color: "#f1636fff" },
-  ];
-
-  const projectData = [
+  const [projectData, setProjectData] = useState([
     {
       client: "TechWave",
       service: "Web Development",
@@ -59,6 +54,45 @@ const Dashboard = () => {
       deadline: "05 Dec 2025",
       status: "In Progress",
     },
+    {
+      client: "SkyCloud",
+      service: "Cloud Service",
+      developer: "Suresh Reddy",
+      deadline: "05 Dec 2025",
+      status: "In Progress",
+    },
+    {
+      client: "SkyCloud",
+      service: "Cloud Service",
+      developer: "Suresh Reddy",
+      deadline: "05 Dec 2025",
+      status: "In Progress",
+    },
+    {
+      client: "SkyCloud",
+      service: "Cloud Service",
+      developer: "Suresh Reddy",
+      deadline: "05 Dec 2025",
+      status: "In Progress",
+    },
+  ]);
+
+  const totalClients = 120;
+  const totalProjects = projectData.length;
+  const completedCount = projectData.filter(
+    (p) => p.status === "Completed"
+  ).length;
+  const inProgressCount = projectData.filter(
+    (p) => p.status === "In Progress"
+  ).length;
+
+  const analyticsData = [
+    { title: "Total Clients", value: totalClients, color: "#ffb8b8ff" },
+    { title: "Total Projects", value: totalProjects, color: "#6366F1" },
+    { title: "In Progress", value: inProgressCount, color: "#f5940bff" },
+    { title: "Completed", value: completedCount, color: "#10B981" },
+    { title: "Revenue (This Month)", value: "₹45,200", color: "#f63bf3ff" },
+    { title: "Avg. Completion Time", value: "12 Days", color: "#f1636fff" },
   ];
 
   const monthlyGrowth = [
@@ -77,22 +111,33 @@ const Dashboard = () => {
     { name: "Cloud", projects: 10 },
   ];
 
-  const statusData = [
-    { name: "Completed", value: 61 },
-    { name: "In Progress", value: 24 },
-    { name: "Pending", value: 10 },
-  ];
-
   const COLORS = ["#10B981", "#F59E0B", "#E5E7EB"];
 
-  const recentActivity = [
-    "New client 'TechWave' added",
-    "Project 'AppNest' marked as completed",
-    "Developer 'Suresh' assigned new project",
-    "Invoice #452 generated",
-  ];
+  // ✅ Mark as Done with Popup
+  const handleMarkAsDone = (index) => {
+    MySwal.fire({
+      title: "Mark this project as completed?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#10B981",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, mark as done!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedProjects = [...projectData];
+        updatedProjects[index].status = "Completed";
+        setProjectData(updatedProjects);
 
-  // ✅ renderContent function used properly
+        MySwal.fire({
+          icon: "success",
+          title: "Project marked as completed!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
+  };
+
   const renderContent = () => {
     switch (activeTab) {
       case "blogs":
@@ -110,6 +155,7 @@ const Dashboard = () => {
       default:
         return (
           <>
+            {/* ---------- Analytics Cards ---------- */}
             <div className="analytics-cards">
               {analyticsData.map((card, index) => (
                 <div
@@ -123,6 +169,7 @@ const Dashboard = () => {
               ))}
             </div>
 
+            {/* ---------- Charts Section ---------- */}
             <div className="charts-section">
               <div className="chart-card">
                 <h3>Monthly Project Growth</h3>
@@ -155,16 +202,18 @@ const Dashboard = () => {
                 <ResponsiveContainer width="100%" height={250}>
                   <PieChart>
                     <Pie
-                      data={statusData}
+                      data={[
+                        { name: "Completed", value: completedCount },
+                        { name: "In Progress", value: inProgressCount },
+                      ]}
                       cx="50%"
                       cy="50%"
                       outerRadius={80}
                       dataKey="value"
                       label
                     >
-                      {statusData.map((entry, index) => (
-                        <Cell key={index} fill={COLORS[index % COLORS.length]} />
-                      ))}
+                      <Cell fill="#10B981" />
+                      <Cell fill="#F59E0B" />
                     </Pie>
                     <Tooltip />
                     <Legend />
@@ -173,6 +222,7 @@ const Dashboard = () => {
               </div>
             </div>
 
+            {/* ---------- Project Summary ---------- */}
             <div className="dashboard-bottom">
               <div className="project-summary">
                 <h3>Project Summary</h3>
@@ -207,22 +257,22 @@ const Dashboard = () => {
                             </span>
                           </td>
                           <td>
-                            <button className="mark-btn">Mark as Done</button>
+                            {p.status === "Completed" ? (
+                              <span className="done-text">Completed</span>
+                            ) : (
+                              <button
+                                className="mark-btn"
+                                onClick={() => handleMarkAsDone(index)}
+                              >
+                                Mark as Done
+                              </button>
+                            )}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
                 </div>
-              </div>
-
-              <div className="recent-activity">
-                <h3>Recent Activity</h3>
-                <ul>
-                  {recentActivity.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
               </div>
             </div>
           </>
