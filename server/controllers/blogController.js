@@ -1,9 +1,6 @@
 import Blog from "../models/Blog.js";
 
-/**
- * @desc Create a new blog post
- * @route POST /api/blogs
- */
+
 export const createBlog = async (req, res) => {
   try {
     const { title, image, description, content } = req.body;
@@ -30,10 +27,7 @@ export const createBlog = async (req, res) => {
   }
 };
 
-/**
- * @desc Get all blogs
- * @route GET /api/blogs
- */
+
 export const getAllBlogs = async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });

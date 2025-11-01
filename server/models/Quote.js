@@ -18,9 +18,9 @@ const quoteSchema = new mongoose.Schema(
       required: [true, "Phone number is required"],
       trim: true,
     },
-    serviceType: {
+    service: {
       type: String,
-      required: [true, "Service type is required"],
+      required: [true, "Service is required"],
       trim: true,
     },
     message: {
@@ -30,15 +30,14 @@ const quoteSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "accepted", "declined"],
-      default: "pending",
+      enum: ["Pending", "Accepted", "Declined", "In Progress"],
+      default: "Pending",
     },
   },
   {
-    timestamps: true, // adds createdAt & updatedAt
+    timestamps: true,
   }
 );
 
 const Quote = mongoose.model("Quote", quoteSchema);
-
 export default Quote;

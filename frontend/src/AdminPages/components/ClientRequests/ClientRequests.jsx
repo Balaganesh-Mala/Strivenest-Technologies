@@ -1,44 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaCheckCircle, FaTimesCircle, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import "./ClientRequests.css";
 
 const MySwal = withReactContent(Swal);
+const API = "http://localhost:5000/api/quotes";
 
 const ClientRequests = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [clients, setClients] = useState([
-    {
-      name: "Ravi Kumar",
-      email: "ravi@example.com",
-      phone: "9876543210",
-      service: "Web Development",
-      details: "E-commerce website with payment integration",
-      date: "2025-10-30",
-      status: "Pending",
-    },
-    {
-      name: "Anjali Sharma",
-      email: "anjali@example.com",
-      phone: "9988776655",
-      service: "App Development",
-      details: "Food delivery mobile app",
-      date: "2025-10-28",
-      status: "Pending",
-    },
-    {
-      name: "Suresh Reddy",
-      email: "suresh@example.com",
-      phone: "9900112233",
-      service: "WordPress",
-      details: "Corporate portfolio website",
-      date: "2025-10-25",
-      status: "Pending",
-    },
-  ]);
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleAction = (index, action) => {
+  const fetchClients = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      if (res.ok) setClients(data);
+    } catch (error) {
+      console.error("Error fetching client requests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const handleAction = async (id, action) => {
     const actionText = action === "Accepted" ? "accept" : "decline";
 
     MySwal.fire({
@@ -48,27 +39,46 @@ const ClientRequests = () => {
       confirmButtonColor: action === "Accepted" ? "#10b981" : "#ef4444",
       cancelButtonColor: "#6b7280",
       confirmButtonText: `Yes, ${actionText} it!`,
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        const updated = [...clients];
-        updated[index].status = action;
-        setClients(updated);
+        try {
+          const res = await fetch(`${API}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: action }),
+          });
 
-        MySwal.fire({
-          icon: "success",
-          title: `Request ${actionText}ed successfully!`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
+          if (res.ok) {
+            setClients((prev) =>
+              prev.map((c) =>
+                c._id === id ? { ...c, status: action } : c
+              )
+            );
+
+            MySwal.fire({
+              icon: "success",
+              title: `Request ${actionText}ed successfully!`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            MySwal.fire("Error", "Failed to update request.", "error");
+          }
+        } catch (error) {
+          console.error("Error updating status:", error);
+          MySwal.fire("Error", "Server connection failed.", "error");
+        }
       }
     });
   };
 
-  const filteredClients = clients.filter(
-    (client) =>
-      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      client.service.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredClients = clients.filter((client) => {
+    const search = searchTerm.trim().toLowerCase();
+    return (
+      client.name?.toLowerCase().includes(search) ||
+      client.service?.toLowerCase().includes(search)
+    );
+  });
 
   const total = clients.length;
   const accepted = clients.filter((c) => c.status === "Accepted").length;
@@ -107,67 +117,87 @@ const ClientRequests = () => {
         <FaSearch className="search-icon" />
         <input
           type="text"
-          placeholder="Search by name or service type..."
+          placeholder="Search by name or service..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
 
-      {/* Table */}
+      {/* Table or No Data */}
       <div className="table-container">
-        <table className="client-table">
-          <thead>
-            <tr>
-              <th>Client Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Service Type</th>
-              <th>Project Details</th>
-              <th>Date Submitted</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredClients.map((client, index) => (
-              <tr key={index}>
-                <td>{client.name}</td>
-                <td>{client.email}</td>
-                <td>{client.phone}</td>
-                <td>{client.service}</td>
-                <td>{client.details.slice(0, 50)}</td>
-                <td>{client.date}</td>
-                <td>
-                  {client.status === "Accepted" ? (
-                    <span className="status accepted">Accepted</span>
-                  ) : client.status === "Declined" ? (
-                    <span className="status declined">Declined</span>
-                  ) : (
-                    <span className="status pending">Pending</span>
-                  )}
-                </td>
-                <td>
-                  {client.status === "Pending" && (
-                    <div className="action-btns">
-                      <button
-                        className="accept-btn"
-                        onClick={() => handleAction(index, "Accepted")}
-                      >
-                        <FaCheckCircle />
-                      </button>
-                      <button
-                        className="decline-btn"
-                        onClick={() => handleAction(index, "Declined")}
-                      >
-                        <FaTimesCircle />
-                      </button>
-                    </div>
-                  )}
-                </td>
+        {loading ? (
+          <p className="loading-text">Loading requests...</p>
+        ) : clients.length === 0 ? (
+          <div className="no-data">
+            <img
+              src="https://ik.imagekit.io/izqq5ffwt/ChatGPT%20Image%20Nov%201,%202025,%2010_36_03%20PM.png"
+              alt="No Data"
+              className="no-data-img"
+            />
+            <h3>No Requests Found</h3>
+            <p>There are no client requests available yet.</p>
+          </div>
+        ) : filteredClients.length === 0 ? (
+          <p className="no-results">No matching requests found.</p>
+        ) : (
+          <table className="client-table">
+            <thead>
+              <tr>
+                <th>Client Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Service Type</th>
+                <th>Message</th>
+                <th>Date Submitted</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredClients.map((client) => (
+                <tr key={client._id}>
+                  <td>{client.name}</td>
+                  <td>{client.email}</td>
+                  <td>{client.phone}</td>
+                  <td>{client.service}</td>
+                  <td>
+                    {`${client.message?.slice(0, 40)}${
+                      client.message?.length > 40 ? "..." : ""
+                    }`}
+                  </td>
+                  <td>{new Date(client.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    {client.status === "Accepted" ? (
+                      <span className="status accepted">Accepted</span>
+                    ) : client.status === "Declined" ? (
+                      <span className="status declined">Declined</span>
+                    ) : (
+                      <span className="status pending">Pending</span>
+                    )}
+                  </td>
+                  <td>
+                    {client.status === "Pending" && (
+                      <div className="action-btns">
+                        <button
+                          className="accept-btn"
+                          onClick={() => handleAction(client._id, "Accepted")}
+                        >
+                          <FaCheckCircle />
+                        </button>
+                        <button
+                          className="decline-btn"
+                          onClick={() => handleAction(client._id, "Declined")}
+                        >
+                          <FaTimesCircle />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

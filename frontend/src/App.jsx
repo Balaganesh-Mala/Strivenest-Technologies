@@ -17,13 +17,12 @@ import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
 import Dashboard from "./AdminPages/Dashboard/Dashboard.jsx";
 
-// ✅ Private route to protect admin pages
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
   return token ? children : <Navigate to="/admin/login" replace />;
 };
 
-// ✅ Layout wrapper — hides Navbar/Footer on admin pages
+
 const Layout = ({ children }) => {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith("/admin");
@@ -43,7 +42,6 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>
-          {/* Main public route */}
           <Route
             path="/"
             element={
@@ -60,25 +58,23 @@ const App = () => {
             }
           />
 
-          {/* Other public routes */}
+          
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/service/:serviceId" element={<ServiceDetails />} />
           <Route path="/technology/:techId" element={<TechnologyDetails />} />
 
-          {/* Admin routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/register" element={<AdminRegister />} />
 
           <Route
             path="/admin"
             element={
-              <PrivateRoute>
+              
                 <Dashboard />
-              </PrivateRoute>
+              
             }
           />
 
-          {/* Fallback: redirect unknown paths */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>

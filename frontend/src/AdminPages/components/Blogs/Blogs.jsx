@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import {
-  
-  FaPlus
-  
-  
-  
-} from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Blogs.css";
+
+const API = "http://localhost:5000/api/admin/blogs"
+
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -17,101 +15,110 @@ const Blogs = () => {
     description: "",
     content: "",
   });
+  const [loading, setLoading] = useState(false);
 
+  const fetchBlogs = async () => {
+    try {
+      const res = await fetch(API);
+      const data = await res.json();
+      if (res.ok) setBlogs(data);
+    } catch {
+      toast.error("Failed to fetch blogs");
+    }
+  };
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/admin/blogs");
-        setBlogs(res.data);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
     fetchBlogs();
   }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/blogs", newBlog);
-      setBlogs([...blogs, res.data]);
-      setNewBlog({ title: "", imageUrl: "", description: "", content: "" });
-      alert("Blog added successfully!");
-    } catch (error) {
-      alert("Error adding blog.");
+      const res = await fetch(API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newBlog),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setBlogs([...blogs, data]);
+        setNewBlog({ title: "", imageUrl: "", description: "", content: "" });
+        toast.success("Blog added successfully");
+      } else {
+        toast.error(data.message || "Failed to add blog");
+      }
+    } catch {
+      toast.error("Server error while adding blog");
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/admin/blogs/${id}`);
-        setBlogs(blogs.filter((b) => b._id !== id));
-      } catch (error) {
-        console.error("Error deleting blog:", error);
+        const res = await fetch(`${API}/${id}`, {
+          method: "DELETE",
+        });
+        if (res.ok) {
+          setBlogs(blogs.filter((b) => b._id !== id));
+          toast.success("Blog deleted successfully");
+        } else {
+          toast.error("Failed to delete blog");
+        }
+      } catch {
+        toast.error("Error deleting blog");
       }
     }
   };
 
   return (
     <div className="admin-blogs">
+      <ToastContainer position="top-center" autoClose={2000} />
       <h2>Manage Blogs</h2>
 
       <form className="add-blog-form" onSubmit={handleAdd}>
         <div className="form-grid">
-          <div className="form-group">
-            
-            <input
-              type="text"
-              placeholder="Blog Title"
-              value={newBlog.title}
-              onChange={(e) =>
-                setNewBlog({ ...newBlog, title: e.target.value })
-              }
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            
-            <input
-              type="text"
-              placeholder="Image URL"
-              value={newBlog.imageUrl}
-              onChange={(e) =>
-                setNewBlog({ ...newBlog, imageUrl: e.target.value })
-              }
-              required
-            />
-          </div>
-
-          <div className="form-group">
-           
-            <input
-              type="text"
-              placeholder="Short Description"
-              value={newBlog.description}
-              onChange={(e) =>
-                setNewBlog({ ...newBlog, description: e.target.value })
-              }
-              required
-            />
-          </div>
-
-          <div className="form-group full-width">
-            <textarea
-              placeholder="Blog Content"
-              value={newBlog.content}
-              onChange={(e) =>
-                setNewBlog({ ...newBlog, content: e.target.value })
-              }
-              required
-            ></textarea>
-          </div>
+          <input
+            type="text"
+            placeholder="Blog Title"
+            value={newBlog.title}
+            onChange={(e) =>
+              setNewBlog({ ...newBlog, title: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Image URL"
+            value={newBlog.imageUrl}
+            onChange={(e) =>
+              setNewBlog({ ...newBlog, imageUrl: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Short Description"
+            value={newBlog.description}
+            onChange={(e) =>
+              setNewBlog({ ...newBlog, description: e.target.value })
+            }
+            required
+          />
+          <textarea
+            placeholder="Blog Content"
+            rows="4"
+            value={newBlog.content}
+            onChange={(e) =>
+              setNewBlog({ ...newBlog, content: e.target.value })
+            }
+            required
+          ></textarea>
         </div>
 
-        <button type="submit" className="add-btn">
-          <FaPlus /> Add Blog
+        <button type="submit" className="add-btn" disabled={loading}>
+          <FaPlus /> {loading ? "Adding..." : "Add Blog"}
         </button>
       </form>
 
@@ -124,17 +131,17 @@ const Blogs = () => {
             <div className="blog-info">
               <h3>{blog.title}</h3>
               <p className="desc">{blog.description}</p>
-              <p className="content">{blog.content.slice(0, 120)}...</p>
+              <p className="content">
+                {blog.content.slice(0, 120)}...
+              </p>
             </div>
             <div className="blog-actions">
-              <button className="edit-btn">
-                 Edit
-              </button>
+              <button className="edit-btn">Edit</button>
               <button
                 className="delete-btn"
                 onClick={() => handleDelete(blog._id)}
               >
-                 Delete
+                Delete
               </button>
             </div>
           </div>
