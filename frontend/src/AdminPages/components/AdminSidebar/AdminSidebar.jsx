@@ -1,14 +1,14 @@
 import React from "react";
 import {
   FaTimes,
-  FaHome,
-  FaPen,
   FaUsers,
   FaChartLine,
   FaCog,
   FaUser,
-  FaSignOutAlt,
 } from "react-icons/fa";
+import { TbLogs } from "react-icons/tb";
+import { MdOutlineDashboard, MdLogout } from "react-icons/md";
+
 import "./AdminSidebar.css";
 
 const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) => {
@@ -30,13 +30,13 @@ const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) 
           className={activeTab === "overview" ? "active" : ""}
           onClick={() => handleSelect("overview")}
         >
-          <FaHome /> Overview
+          <MdOutlineDashboard /> Dashboard
         </li>
         <li
           className={activeTab === "blogs" ? "active" : ""}
           onClick={() => handleSelect("blogs")}
         >
-          <FaPen /> Blogs
+          <TbLogs/> Blogs
         </li>
         <li
           className={activeTab === "clients" ? "active" : ""}
@@ -67,7 +67,7 @@ const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) 
 
       <div className="admin-logout">
         <li>
-          <FaSignOutAlt /> Logout
+          <MdLogout /> Logout
         </li>
       </div>
     </aside>

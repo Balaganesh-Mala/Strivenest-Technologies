@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { FaUserPlus } from "react-icons/fa";
 import "./AdminRegister.css";
 
 const AdminRegister = () => {
@@ -11,6 +12,7 @@ const AdminRegister = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setAdmin({ ...admin, [e.target.name]: e.target.value });
@@ -18,25 +20,45 @@ const AdminRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setLoading(true);
 
     if (admin.password !== admin.confirmPassword) {
-      setMessage("Passwords do not match!");
+      setMessage("⚠️ Passwords do not match!");
+      setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/admin/register", admin);
-      setMessage(response.data.message || "Admin registered successfully!");
+      const response = await axios.post(
+        "http://localhost:5000/api/admin/register",
+        {
+          name: admin.name,
+          email: admin.email,
+          password: admin.password,
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      setMessage(response.data.message || "✅ Admin registered successfully!");
       setAdmin({ name: "", email: "", password: "", confirmPassword: "" });
     } catch (error) {
-      setMessage(error.response?.data?.message || "Registration failed. Try again.");
+      setMessage(
+        error.response?.data?.message || "❌ Registration failed. Try again."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="admin-register-container">
       <form className="admin-register-form" onSubmit={handleSubmit}>
-        <h2>Admin Registration</h2>
+        <h2>
+          <FaUserPlus className="icon" /> Admin Registration
+        </h2>
 
         <input
           type="text"
@@ -74,7 +96,9 @@ const AdminRegister = () => {
           required
         />
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
 
         {message && <p className="message">{message}</p>}
       </form>

@@ -85,7 +85,7 @@ h2 {
   background: white;
   outline: none;
   width: 100%;
-  padding-left: 35px;
+  padding-left: 35px !important;
   font-size: 14px;
 }
 

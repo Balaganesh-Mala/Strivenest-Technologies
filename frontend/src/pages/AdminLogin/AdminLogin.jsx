@@ -5,28 +5,43 @@ import "./AdminLogin.css";
 
 const AdminLogin = () => {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  // Handle input change
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
+  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setMessage("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/login", form);
-      localStorage.setItem("adminToken", res.data.token);
-      navigate("/admin");
+      const res = await axios.post("http://localhost:5000/api/admin/login", form, {
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.data.success) {
+        // Store JWT token in localStorage
+        localStorage.setItem("adminToken", res.data.token);
+        setMessage("Login successful! Redirecting...");
+        setTimeout(() => navigate("/admin"), 1000);
+      } else {
+        setMessage(res.data.message || "Login failed. Try again.");
+      }
     } catch (err) {
-      setError("Invalid email or password");
+      console.error("Login error:", err);
+      setMessage(err.response?.data?.message || "Invalid email or password.");
     }
   };
 
   return (
     <div className="admin-login-container">
-      <h2>Admin Login - Strivenest Technologies</h2>
-      <form onSubmit={handleSubmit} className="admin-login-form">
+      <form className="admin-login-form" onSubmit={handleSubmit}>
+        <h2>Admin Login</h2>
+
         <input
           type="email"
           name="email"
@@ -35,6 +50,7 @@ const AdminLogin = () => {
           onChange={handleChange}
           required
         />
+
         <input
           type="password"
           name="password"
@@ -43,8 +59,10 @@ const AdminLogin = () => {
           onChange={handleChange}
           required
         />
+
         <button type="submit">Login</button>
-        {error && <p className="error">{error}</p>}
+
+        {message && <p className="message">{message}</p>}
       </form>
     </div>
   );

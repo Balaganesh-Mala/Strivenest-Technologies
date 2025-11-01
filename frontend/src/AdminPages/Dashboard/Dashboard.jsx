@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AdminNavbar from "../components/AdminNavbar/AdminNavbar.jsx";
 import AdminSidebar from "../components/AdminSidebar/AdminSidebar.jsx";
 import AdminProfile from "../components/Profile/Profile.jsx";
-import ChangePassword from "../components/ChangePassword/ChangePassword.jsx";
 import AdminBlogs from "../components/Blogs/Blogs.jsx";
 import ClientRequests from "../components/ClientRequests/ClientRequests.jsx";
 import Analytics from "../components/Analytics/Analytics.jsx";
@@ -87,12 +86,10 @@ const Dashboard = () => {
   ).length;
 
   const analyticsData = [
-    { title: "Total Clients", value: totalClients, color: "#ffb8b8ff" },
+    { title: "Total Clients", value: totalClients, color: "#ff05cdff" },
     { title: "Total Projects", value: totalProjects, color: "#6366F1" },
     { title: "In Progress", value: inProgressCount, color: "#f5940bff" },
     { title: "Completed", value: completedCount, color: "#10B981" },
-    { title: "Revenue (This Month)", value: "₹45,200", color: "#f63bf3ff" },
-    { title: "Avg. Completion Time", value: "12 Days", color: "#f1636fff" },
   ];
 
   const monthlyGrowth = [
@@ -101,7 +98,12 @@ const Dashboard = () => {
     { month: "Mar", projects: 20 },
     { month: "Apr", projects: 25 },
     { month: "May", projects: 30 },
-    { month: "Jun", projects: 35 },
+    { month: "Jun", projects: 45 },
+    { month: "July", projects: 35 },
+    { month: "Aug", projects: 50 },
+    { month: "Spe", projects: 48 },
+    { month: "Oct", projects: 52 },
+    { month: "Nov", projects: 59 },
   ];
 
   const serviceDistribution = [
