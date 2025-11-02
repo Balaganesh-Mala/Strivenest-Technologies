@@ -12,10 +12,10 @@ import { verifyToken } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 
-router.post("/", verifyToken, createBlog);
+router.post("/", createBlog);
 router.get("/", getAllBlogs);
 router.get("/:id", getBlogById);
 router.put("/:id", updateBlog);
-router.delete("/:id", verifyToken, deleteBlog);
+router.delete("/:id",  deleteBlog);
 
 export default router;

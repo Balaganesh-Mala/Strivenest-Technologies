@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminNavbar from "../components/AdminNavbar/AdminNavbar.jsx";
 import AdminSidebar from "../components/AdminSidebar/AdminSidebar.jsx";
 import AdminProfile from "../components/Profile/Profile.jsx";
 import AdminBlogs from "../components/Blogs/Blogs.jsx";
 import ClientRequests from "../components/ClientRequests/ClientRequests.jsx";
+import ProjectAssignment from "../components/ProjectAssignment/ProjectAssignment.jsx";
 import Analytics from "../components/Analytics/Analytics.jsx";
 import Settings from "../components/Settings/Settings.jsx";
 import Swal from "sweetalert2";
@@ -26,64 +27,43 @@ import {
 import "./Dashboard.css";
 
 const MySwal = withReactContent(Swal);
+const ASSIGNMENTS_API = "http://localhost:5000/api/assignments";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [assignments, setAssignments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [projectData, setProjectData] = useState([
-    {
-      client: "TechWave",
-      service: "Web Development",
-      developer: "Anjali Sharma",
-      deadline: "15 Nov 2025",
-      status: "In Progress",
-    },
-    {
-      client: "AppNest",
-      service: "App Development",
-      developer: "Ravi Kumar",
-      deadline: "25 Nov 2025",
-      status: "Completed",
-    },
-    {
-      client: "SkyCloud",
-      service: "Cloud Service",
-      developer: "Suresh Reddy",
-      deadline: "05 Dec 2025",
-      status: "In Progress",
-    },
-    {
-      client: "SkyCloud",
-      service: "Cloud Service",
-      developer: "Suresh Reddy",
-      deadline: "05 Dec 2025",
-      status: "In Progress",
-    },
-    {
-      client: "SkyCloud",
-      service: "Cloud Service",
-      developer: "Suresh Reddy",
-      deadline: "05 Dec 2025",
-      status: "In Progress",
-    },
-    {
-      client: "SkyCloud",
-      service: "Cloud Service",
-      developer: "Suresh Reddy",
-      deadline: "05 Dec 2025",
-      status: "In Progress",
-    },
-  ]);
+  // ✅ Fetch all assignments
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      try {
+        const res = await fetch(ASSIGNMENTS_API);
+        const data = await res.json();
+        if (res.ok) {
+          setAssignments(data);
+        }
+      } catch (error) {
+        console.error("Error fetching assignments:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAssignments();
+  }, []);
 
-  const totalClients = 120;
-  const totalProjects = projectData.length;
-  const completedCount = projectData.filter(
+  // ✅ Derived data
+  const totalProjects = assignments.length;
+  const completedCount = assignments.filter(
     (p) => p.status === "Completed"
   ).length;
-  const inProgressCount = projectData.filter(
-    (p) => p.status === "In Progress"
+  const inProgressCount = assignments.filter(
+    (p) => p.status === "Assigned"
   ).length;
+
+  // ✅ Fix total clients count
+  const totalClients = new Set(assignments.map((a) => a.clientName)).size;
 
   const analyticsData = [
     { title: "Total Clients", value: totalClients, color: "#ff05cdff" },
@@ -92,31 +72,33 @@ const Dashboard = () => {
     { title: "Completed", value: completedCount, color: "#10B981" },
   ];
 
-  const monthlyGrowth = [
-    { month: "Jan", projects: 10 },
-    { month: "Feb", projects: 14 },
-    { month: "Mar", projects: 20 },
-    { month: "Apr", projects: 25 },
-    { month: "May", projects: 30 },
-    { month: "Jun", projects: 45 },
-    { month: "July", projects: 35 },
-    { month: "Aug", projects: 50 },
-    { month: "Spe", projects: 48 },
-    { month: "Oct", projects: 52 },
-    { month: "Nov", projects: 59 },
-  ];
+  // ✅ Monthly Growth
+  const monthlyGrowth = Object.values(
+    assignments.reduce((acc, curr) => {
+      const month = new Date(curr.createdAt || Date.now()).toLocaleString(
+        "default",
+        { month: "short" }
+      );
+      acc[month] = acc[month] || { month, projects: 0 };
+      acc[month].projects += 1;
+      return acc;
+    }, {})
+  );
 
-  const serviceDistribution = [
-    { name: "Web", projects: 40 },
-    { name: "App", projects: 25 },
-    { name: "WordPress", projects: 10 },
-    { name: "Cloud", projects: 10 },
-  ];
+  // ✅ Service Distribution
+  const serviceDistribution = Object.values(
+    assignments.reduce((acc, curr) => {
+      const service = curr.service || "Unknown";
+      acc[service] = acc[service] || { name: service, projects: 0 };
+      acc[service].projects += 1;
+      return acc;
+    }, {})
+  );
 
-  const COLORS = ["#10B981", "#F59E0B", "#E5E7EB"];
+  const COLORS = ["#10B981", "#F59E0B"];
 
-  // ✅ Mark as Done with Popup
-  const handleMarkAsDone = (index) => {
+  // ✅ Mark as Done
+  const handleMarkAsDone = async (assignmentId) => {
     MySwal.fire({
       title: "Mark this project as completed?",
       icon: "question",
@@ -124,18 +106,31 @@ const Dashboard = () => {
       confirmButtonColor: "#10B981",
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, mark as done!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        const updatedProjects = [...projectData];
-        updatedProjects[index].status = "Completed";
-        setProjectData(updatedProjects);
-
-        MySwal.fire({
-          icon: "success",
-          title: "Project marked as completed!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
+        try {
+          const res = await fetch(`${ASSIGNMENTS_API}/${assignmentId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "Completed" }),
+          });
+          if (res.ok) {
+            setAssignments((prev) =>
+              prev.map((a) =>
+                a._id === assignmentId ? { ...a, status: "Completed" } : a
+              )
+            );
+            MySwal.fire({
+              icon: "success",
+              title: "Project marked as completed!",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        } catch (err) {
+          console.error(err);
+          MySwal.fire("Error", "Failed to update project.", "error");
+        }
       }
     });
   };
@@ -152,8 +147,8 @@ const Dashboard = () => {
         return <Settings />;
       case "profile":
         return <AdminProfile />;
-      case "password":
-        return <ChangePassword />;
+      case "project-assignment":
+        return <ProjectAssignment />;
       default:
         return (
           <>
@@ -228,53 +223,78 @@ const Dashboard = () => {
             <div className="dashboard-bottom">
               <div className="project-summary">
                 <h3>Project Summary</h3>
-                <div className="table-wrap">
-                  <table className="projects-table">
-                    <thead>
-                      <tr>
-                        <th>Client</th>
-                        <th>Service</th>
-                        <th>Developer</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {projectData.map((p, index) => (
-                        <tr key={index}>
-                          <td>{p.client}</td>
-                          <td>{p.service}</td>
-                          <td>{p.developer}</td>
-                          <td>{p.deadline}</td>
-                          <td>
-                            <span
-                              className={`status ${
-                                p.status === "Completed"
-                                  ? "completed"
-                                  : "in-progress"
-                              }`}
-                            >
-                              {p.status}
-                            </span>
-                          </td>
-                          <td>
-                            {p.status === "Completed" ? (
-                              <span className="done-text">Completed</span>
-                            ) : (
-                              <button
-                                className="mark-btn"
-                                onClick={() => handleMarkAsDone(index)}
-                              >
-                                Mark as Done
-                              </button>
-                            )}
-                          </td>
+
+                {loading ? (
+                  <p>Loading projects...</p>
+                ) : assignments.length === 0 ? (
+                  <div className="no-data">
+                    <img
+                      src="https://ik.imagekit.io/izqq5ffwt/no-data.png"
+                      alt="No Data"
+                      className="no-data-img"
+                    />
+                    <h3>No Assignments Found</h3>
+                    <p>No client projects have been assigned yet.</p>
+                  </div>
+                ) : (
+                  <div className="table-wrap">
+                    <table className="projects-table">
+                      <thead>
+                        <tr>
+                          <th>Client</th>
+                          <th>Service</th>
+                          <th>Developer</th>
+                          <th>Start Date</th>
+                          <th>Deadline</th>
+                          <th>Status</th>
+                          <th>Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {assignments.map((p) => (
+                          <tr key={p._id}>
+                            <td>{p.clientName}</td>
+                            <td>{p.service}</td>
+                            <td>{p.assignedTo}</td>
+                            <td>
+                              {p.startDate
+                                ? new Date(p.startDate).toLocaleDateString()
+                                : "N/A"}
+                            </td>
+                            <td>
+                              {p.deadline
+                                ? new Date(p.deadline).toLocaleDateString()
+                                : "N/A"}
+                            </td>
+                            <td>
+                              <span
+                                className={`status ${
+                                  p.status === "Completed"
+                                    ? "completed"
+                                    : "in-progress"
+                                }`}
+                              >
+                                {p.status === "Assigned" ? "In Progress" : "Completed"}
+                              </span>
+                            </td>
+                            <td>
+                              {p.status === "Completed" ? (
+                                <span className="done-text">Completed</span>
+                              ) : (
+                                <button
+                                  className="mark-btn"
+                                  onClick={() => handleMarkAsDone(p._id)}
+                                >
+                                  Mark as Done
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
               </div>
             </div>
           </>
@@ -291,7 +311,6 @@ const Dashboard = () => {
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
-
       <main className={`dashboard-main ${sidebarOpen ? "sidebar-open" : ""}`}>
         {renderContent()}
       </main>

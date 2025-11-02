@@ -57,8 +57,7 @@ label {
   font-size: 1.1rem;
 }
 
-input,
-select,
+.input-controls,
 textarea {
   width: 100%;
   padding: 12px 14px 12px 42px !important;
@@ -70,10 +69,7 @@ textarea {
   transition: all 0.3s ease;
 }
 
-textarea {
-  resize: none;
-  padding-left: 42px;
-}
+
 
 input:focus,
 select:focus,

@@ -43,8 +43,9 @@ h2 {
 
 .summary-card h3 {
   margin: 0;
-  font-size: 20px;
-  font-weight: bold;
+  color: #333;
+  font-size: 20px ;
+  font-weight: bold ;
 }
 
 .summary-card p {
@@ -53,7 +54,7 @@ h2 {
 }
 
 .summary-card.total {
-  border-top: 4px solid #6366f1;
+  border-top: 4px solid #f163ef;
 }
 
 .summary-card.pending {
@@ -66,6 +67,9 @@ h2 {
 
 .summary-card.declined {
   border-top: 4px solid #ef4444;
+}
+.summary-card.assigned{
+  border-top: 4px solid #4455ef;
 }
 
 /* Search Bar */
@@ -153,7 +157,10 @@ h2 {
 .status.pending {
   color: #f59e0b;
 }
-
+.assigned-text{
+  color: rgb(116, 116, 116);
+  font-size: 12px;
+}
 /* Buttons */
 .action-btns {
   display: flex;
@@ -207,6 +214,12 @@ h2 {
   color: #777;
   margin-top: 30px;
   font-size: 1.1rem;
+}
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
 }
 
 

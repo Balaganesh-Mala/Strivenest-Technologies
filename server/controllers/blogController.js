@@ -14,7 +14,6 @@ export const createBlog = async (req, res) => {
       image,
       description,
       content,
-      createdBy: req.user ? req.user.id : "Admin",
     });
 
     res.status(201).json({
@@ -38,10 +37,7 @@ export const getAllBlogs = async (req, res) => {
   }
 };
 
-/**
- * @desc Get single blog by ID
- * @route GET /api/blogs/:id
- */
+
 export const getBlogById = async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
@@ -55,10 +51,7 @@ export const getBlogById = async (req, res) => {
   }
 };
 
-/**
- * @desc Update blog
- * @route PUT /api/blogs/:id
- */
+
 export const updateBlog = async (req, res) => {
   try {
     const { title, image, description, content } = req.body;
@@ -82,10 +75,6 @@ export const updateBlog = async (req, res) => {
   }
 };
 
-/**
- * @desc Delete blog
- * @route DELETE /api/blogs/:id
- */
 export const deleteBlog = async (req, res) => {
   try {
     const deletedBlog = await Blog.findByIdAndDelete(req.params.id);

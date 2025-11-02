@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaCheckCircle, FaTimesCircle, FaSearch } from "react-icons/fa";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { ThreeDots } from "react-loader-spinner";
 import "./ClientRequests.css";
 
 const MySwal = withReactContent(Swal);
@@ -50,9 +51,7 @@ const ClientRequests = () => {
 
           if (res.ok) {
             setClients((prev) =>
-              prev.map((c) =>
-                c._id === id ? { ...c, status: action } : c
-              )
+              prev.map((c) => (c._id === id ? { ...c, status: action } : c))
             );
 
             MySwal.fire({
@@ -84,6 +83,7 @@ const ClientRequests = () => {
   const accepted = clients.filter((c) => c.status === "Accepted").length;
   const declined = clients.filter((c) => c.status === "Declined").length;
   const pending = clients.filter((c) => c.status === "Pending").length;
+  const assigned = clients.filter((c) => c.status === "Assigned").length;
 
   return (
     <div className="client-requests-container">
@@ -92,7 +92,6 @@ const ClientRequests = () => {
         Manage incoming client quotes and project requests.
       </p>
 
-      {/* Summary Cards */}
       <div className="summary-cards">
         <div className="summary-card total">
           <h3>{total}</h3>
@@ -110,9 +109,12 @@ const ClientRequests = () => {
           <h3>{declined}</h3>
           <p>Declined</p>
         </div>
+        <div className="summary-card assigned">
+          <h3>{assigned}</h3>
+          <p>Assigned</p>
+        </div>
       </div>
 
-      {/* Search Bar */}
       <div className="search-bar">
         <FaSearch className="search-icon" />
         <input
@@ -123,10 +125,18 @@ const ClientRequests = () => {
         />
       </div>
 
-      {/* Table or No Data */}
       <div className="table-container">
         {loading ? (
-          <p className="loading-text">Loading requests...</p>
+          <div className="loader-container">
+            <ThreeDots
+              height="70"
+              width="70"
+              radius="9"
+              color="#007bff"
+              ariaLabel="three-dots-loading"
+              visible={true}
+            />
+          </div>
         ) : clients.length === 0 ? (
           <div className="no-data">
             <img
@@ -171,6 +181,8 @@ const ClientRequests = () => {
                       <span className="status accepted">Accepted</span>
                     ) : client.status === "Declined" ? (
                       <span className="status declined">Declined</span>
+                    ) : client.status === "Assigned" ? (
+                      <span className="status assigned">Assigned</span>
                     ) : (
                       <span className="status pending">Pending</span>
                     )}
@@ -191,6 +203,9 @@ const ClientRequests = () => {
                           <FaTimesCircle />
                         </button>
                       </div>
+                    )}
+                    {client.status === "Assigned" && (
+                      <span className="assigned-text">Assigned</span>
                     )}
                   </td>
                 </tr>

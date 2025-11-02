@@ -1,6 +1,5 @@
-
 .admin-blogs {
-  padding: 20px ;
+  padding: 20px;
   max-width: 1200px;
   margin: auto;
   font-family: "Poppins", sans-serif;
@@ -11,7 +10,6 @@
   align-items: center;
 }
 
-
 .admin-blogs h2 {
   font-size: 1.8rem;
   font-weight: 600;
@@ -19,7 +17,6 @@
   color: #003366;
   margin-bottom: 35px;
 }
-
 
 .add-blog-form {
   background: #ffffff;
@@ -32,8 +29,6 @@
   width: 650px;
 }
 
-
-
 .add-blog-form input,
 .add-blog-form textarea {
   width: 100%;
@@ -45,7 +40,7 @@
   background: #fafafa;
   transition: 0.3s ease;
 }
-.form-grid{
+.form-grid {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -66,6 +61,7 @@
 .add-blog-form button {
   align-self: flex-start;
   background: #007bff;
+  border: 1px solid #0066ff;
   color: #fff;
   padding: 12px 24px;
   border: none;
@@ -88,7 +84,8 @@
   margin-top: 50px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+  gap: 15px;
+  width: 100%;
 }
 
 .blog-card {
@@ -162,6 +159,66 @@
 .delete-btn:hover {
   background: #ffd4d4;
 }
+.btn-flex {
+  display: flex;
+  column-gap: 10px;
+}
+.cancel-btn {
+  background-color: transparent !important;
+  border: 1px solid #0066ff !important;
+  color: #0066ff !important;
+}
+/* Top header container (for title + button alignment) */
+.header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+/* Add Blog button */
+.add-btn-top {
+  background-color: #007bff; /* professional blue */
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-btn-top:hover {
+  background-color: #0056b3; /* darker blue hover */
+  transform: translateY(-1px);
+}
+
+.add-btn-top:active {
+  transform: scale(0.97);
+}
+
+.add-btn-top svg {
+  font-size: 16px;
+}
+.add-btn-top {
+  position: sticky;
+  top: 15px;
+  right: 20px;
+  z-index: 10;
+}
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+}
+
 
 /* ====== Responsive Design ====== */
 @media (max-width: 768px) {
@@ -179,8 +236,8 @@
     justify-content: center;
   }
 }
-@media (max-width:450px){
-  .add-blog-form{
+@media (max-width: 450px) {
+  .add-blog-form {
     width: 100%;
   }
 }

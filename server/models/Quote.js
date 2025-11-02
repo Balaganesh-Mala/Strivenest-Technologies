@@ -30,7 +30,7 @@ const quoteSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Accepted", "Declined", "In Progress"],
+      enum: ["Pending", "Accepted", "Declined", "Assigned","Completed"],
       default: "Pending",
     },
   },
@@ -39,5 +39,7 @@ const quoteSchema = new mongoose.Schema(
   }
 );
 
-const Quote = mongoose.model("Quote", quoteSchema);
+// ✅ FIX: prevent model overwrite errors
+const Quote = mongoose.models.Quote || mongoose.model("Quote", quoteSchema);
+
 export default Quote;

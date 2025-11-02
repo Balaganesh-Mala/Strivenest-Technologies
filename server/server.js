@@ -8,6 +8,7 @@ import connectDB from "./config/db.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import quoteRoutes from "./routes/quoteRoutes.js";
+import projectAssignmentRoutes from "./routes/projectAssignmentRoutes.js";
 
 //DB
 connectDB();
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use("/api/admin", adminRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/quotes", quoteRoutes);
+app.use("/api/assignments", projectAssignmentRoutes);
 
 app.get("/", (req, res)=>{
   res.send("API WORKING")

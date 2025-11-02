@@ -1,71 +1,85 @@
-import React, { useState } from "react";
-import topfive from "../../assets/BlogsImg/topfive.png";
-import business from "../../assets/BlogsImg/bussiness.png";
-import cloud from "../../assets/BlogsImg/cloud.png";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 import "./Blogs.css";
 
-const blogsData = [
-  {
-    id: 1,
-    title: "Top 5 Web Development Trends for 2025",
-    image: `${topfive}`,
-    date: "October 28, 2025",
-    description:
-      "Discover the latest trends shaping the web development industry in 2025, including AI-driven design, serverless technology, and advanced front-end frameworks.",
-    content:
-      "The web development landscape continues to evolve rapidly. In 2025, developers are focusing more on AI automation, headless CMS, and better user experience design. With tools like Next.js, React, and cloud integration, websites are becoming faster, smarter, and more interactive.",
-  },
-  {
-    id: 2,
-    title: "Why Every Business Needs a Mobile App",
-    image: `${business}`,
-    date: "September 15, 2025",
-    description:
-      "Mobile apps are no longer optional. Learn how having a business app boosts customer engagement and helps your brand stay competitive in the digital age.",
-    content:
-      "From startups to enterprises, mobile apps play a crucial role in customer retention. A well-designed mobile app increases accessibility, allows direct marketing, and enhances the customer experience — all key factors for business growth.",
-  },
-  {
-    id: 3,
-    title: "Cloud Services: The Backbone of Modern Businesses",
-    image: `${cloud}`,
-    date: "August 5, 2025",
-    description:
-      "Cloud technology empowers businesses to scale efficiently. Here’s how cloud solutions like AWS, Google Cloud, and Azure are transforming industries.",
-    content:
-      "Cloud services provide secure storage, data processing, and scalability for all types of businesses. From e-commerce platforms to AI-driven apps, the cloud ensures high performance, flexibility, and reliability while reducing operational costs.",
-  },
-];
+const API = "http://localhost:5000/api/blogs";
 
 const Blogs = () => {
+  const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(API);
+      setBlogs(res.data);
+    } catch (err) {
+      console.error("Error fetching blogs:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <section id="blog" className="blogs-section">
       <h2 className="blogs-title">Our Latest Blogs</h2>
 
-      {!selectedBlog ? (
+      {loading ? (
+        <div className="loader-container">
+          <ThreeDots
+            height="70"
+            width="70"
+            radius="9"
+            color="#007bff"
+            ariaLabel="three-dots-loading"
+            visible={true}
+          />
+        </div>
+      ) : !selectedBlog ? (
         <div className="blogs-grid">
-          {blogsData.map((blog) => (
-            <div key={blog.id} className="blog-card">
-              <img src={blog.image} alt={blog.title} className="blog-image" />
-              <div className="blog-content">
-                <h3>{blog.title}</h3>
-                <p className="blog-date">{blog.date}</p>
-                <p className="blog-desc">{blog.description}</p>
-                <button onClick={() => setSelectedBlog(blog)} className="read-more">
-                  Read More
-                </button>
-              </div>
+          {blogs.length === 0 ? (
+            <div className="no-data">
+              <img
+                src="https://ik.imagekit.io/izqq5ffwt/ChatGPT%20Image%20Nov%201,%202025,%2010_36_03%20PM.png"
+                alt="No Data"
+              />
+              <p>No blogs available</p>
             </div>
-          ))}
+          ) : (
+            blogs.map((blog) => (
+              <div key={blog._id} className="blog-card">
+                <img src={blog.image} alt={blog.title} className="blog-image" />
+                <div className="blog-content">
+                  <h3>{blog.title}</h3>
+                  <p className="blog-date">{blog.date}</p>
+                  <p className="blog-desc">{blog.description}</p>
+                  <button
+                    onClick={() => setSelectedBlog(blog)}
+                    className="read-more"
+                  >
+                    Read More
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       ) : (
         <div className="blog-detail">
           <button className="back-btn" onClick={() => setSelectedBlog(null)}>
             ← Back to Blogs
           </button>
-          <img src={selectedBlog.image} alt={selectedBlog.title} className="detail-image" />
+          <img
+            src={selectedBlog.image}
+            alt={selectedBlog.title}
+            className="detail-image"
+          />
           <h2>{selectedBlog.title}</h2>
           <p className="blog-date">{selectedBlog.date}</p>
           <p className="blog-full-content">{selectedBlog.content}</p>

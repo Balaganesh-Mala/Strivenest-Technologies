@@ -31,7 +31,7 @@ const blogSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // Automatically adds createdAt & updatedAt
+    timestamps: true, /// Automatically adds createdAt & updatedAt
   }
 );
 

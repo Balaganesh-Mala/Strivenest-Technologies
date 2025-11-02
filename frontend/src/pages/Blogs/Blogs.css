@@ -111,7 +111,15 @@
   font-size: 1rem;
   line-height: 1.7;
 }
-
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+}
+.no-data img {
+  width: 200px;
+}
 /* Responsive */
 @media (max-width: 768px) {
   .blogs-title {
