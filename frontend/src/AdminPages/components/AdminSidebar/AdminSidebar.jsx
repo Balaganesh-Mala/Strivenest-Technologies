@@ -3,9 +3,13 @@ import {
   FaTimes,
   FaUsers,
   FaChartLine,
-  FaCog,
   FaUser,
+  
 } from "react-icons/fa";
+import { LiaThListSolid } from "react-icons/lia";
+
+
+
 import { TbLogs } from "react-icons/tb";
 import { MdOutlineDashboard, MdLogout } from "react-icons/md";
 import { FaTasks } from "react-icons/fa"; // new icon for Project Assignment
@@ -33,12 +37,7 @@ const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) 
             <MdOutlineDashboard /> Dashboard
           </li>
 
-          <li
-            className={activeTab === "blogs" ? "active" : ""}
-            onClick={() => handleSelect("blogs")}
-          >
-            <TbLogs /> Blogs
-          </li>
+          
 
           <li
             className={activeTab === "clients" ? "active" : ""}
@@ -47,12 +46,23 @@ const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) 
             <FaUsers /> Client Requests
           </li>
 
-          {/* ✅ NEW TAB: Project Assignment */}
           <li
             className={activeTab === "project-assignment" ? "active" : ""}
             onClick={() => handleSelect("project-assignment")}
           >
             <FaTasks /> Project Assignment
+          </li>
+          <li
+            className={activeTab === "project-summary" ? "active" : ""}
+            onClick={() => handleSelect("project-summary")}
+          >
+            <LiaThListSolid/> Project Summary
+          </li>
+          <li
+            className={activeTab === "blogs" ? "active" : ""}
+            onClick={() => handleSelect("blogs")}
+          >
+            <TbLogs /> Blogs
           </li>
 
           <li
@@ -69,12 +79,7 @@ const AdminSidebar = ({ activeTab, setActiveTab, sidebarOpen, setSidebarOpen }) 
             <FaUser /> Profile
           </li>
 
-          <li
-            className={activeTab === "settings" ? "active" : ""}
-            onClick={() => handleSelect("settings")}
-          >
-            <FaCog /> Settings
-          </li>
+          
         </ul>
       </div>
 

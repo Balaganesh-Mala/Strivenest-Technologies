@@ -1,52 +1,61 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { FaUserShield } from "react-icons/fa";
 import "./AdminLogin.css";
 
 const AdminLogin = () => {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [admin, setAdmin] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  // Handle input change
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setAdmin({ ...admin, [e.target.name]: e.target.value });
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/login", form, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const { data } = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        admin,
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      if (res.data.success) {
-        // Store JWT token in localStorage
-        localStorage.setItem("adminToken", res.data.token);
-        setMessage("Login successful! Redirecting...");
-        setTimeout(() => navigate("/admin"), 1000);
+      console.log("API Response:", data); // helpful debug
+
+      if (data.success && data.data) {
+        const userData = data.data;
+        localStorage.setItem("adminToken", userData.token);
+        localStorage.setItem("adminName", userData.name);
+        localStorage.setItem("adminRole", userData.role);
+
+        setMessage("Admin login successful!");
+        window.location.href = "/admin"; // redirect to admin dashboard
       } else {
-        setMessage(res.data.message || "Login failed. Try again.");
+        setMessage("Invalid credentials");
       }
-    } catch (err) {
-      console.error("Login error:", err);
-      setMessage(err.response?.data?.message || "Invalid email or password.");
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Login failed!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="admin-login-container">
       <form className="admin-login-form" onSubmit={handleSubmit}>
-        <h2>Admin Login</h2>
+        <h2>
+          <FaUserShield className="icon" /> Admin Login
+        </h2>
 
         <input
           type="email"
           name="email"
-          placeholder="Enter admin email"
-          value={form.email}
+          placeholder="Admin Email"
+          value={admin.email}
           onChange={handleChange}
           required
         />
@@ -54,13 +63,15 @@ const AdminLogin = () => {
         <input
           type="password"
           name="password"
-          placeholder="Enter password"
-          value={form.password}
+          placeholder="Password"
+          value={admin.password}
           onChange={handleChange}
           required
         />
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
 
         {message && <p className="message">{message}</p>}
       </form>

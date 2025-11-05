@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { FaUserPlus } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa";
 import "./AdminRegister.css";
 
 const AdminRegister = () => {
@@ -31,18 +31,17 @@ const AdminRegister = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/register",
+        "http://localhost:5000/api/auth/register",
         {
           name: admin.name,
           email: admin.email,
           password: admin.password,
+          role: "Admin",
         },
-        {
-          headers: { "Content-Type": "application/json" },
-        }
+        { headers: { "Content-Type": "application/json" } }
       );
 
-      setMessage(response.data.message || "✅ Admin registered successfully!");
+      setMessage("✅ Admin registered successfully!");
       setAdmin({ name: "", email: "", password: "", confirmPassword: "" });
     } catch (error) {
       setMessage(
@@ -54,10 +53,10 @@ const AdminRegister = () => {
   };
 
   return (
-    <div className="admin-register-container">
-      <form className="admin-register-form" onSubmit={handleSubmit}>
+    <div className="register-container">
+      <form className="register-form" onSubmit={handleSubmit}>
         <h2>
-          <FaUserPlus className="icon" /> Admin Registration
+          <FaUserShield className="icon" /> Admin Registration
         </h2>
 
         <input
@@ -68,7 +67,6 @@ const AdminRegister = () => {
           onChange={handleChange}
           required
         />
-
         <input
           type="email"
           name="email"
@@ -77,7 +75,6 @@ const AdminRegister = () => {
           onChange={handleChange}
           required
         />
-
         <input
           type="password"
           name="password"
@@ -86,7 +83,6 @@ const AdminRegister = () => {
           onChange={handleChange}
           required
         />
-
         <input
           type="password"
           name="confirmPassword"

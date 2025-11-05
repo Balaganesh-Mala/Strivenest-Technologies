@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import Home from "./pages/Home/Home.jsx";
 import Navbar from "./components/Navbar/Navbar.jsx";
 import AboutUs from "./pages/AboutUs/AboutUs.jsx";
@@ -13,26 +19,46 @@ import ConsultationForm from "./pages/ConsultationForm/ConsultationForm.jsx";
 import WhatsAppButton from "./components/WhatsAppButton/WhatsAppButton.jsx";
 import ServiceDetails from "./pages/ServiceDetails/ServiceDetails.jsx";
 import TechnologyDetails from "./pages/TechnologyDetails/TechnologyDetails.jsx";
+
+// Admin Pages
 import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
 import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
 import Dashboard from "./AdminPages/Dashboard/Dashboard.jsx";
 
-const PrivateRoute = ({ children }) => {
+// Developer Pages
+import DeveloperLogin from "./DeveloperPages/pages/Auth/Login.jsx";
+import DeveloperRegister from "./pages/DeveloperRegister/DeveloperRegister.jsx";
+import DeveloperDashboard from "./DeveloperPages/pages/Developer/DeveloperDashboard.jsx";
+import ProjectRequests from "./DeveloperPages/pages/Developer/ProjectRequests.jsx";
+import ProjectSummary from "./DeveloperPages/pages/Developer/ProjectSummary.jsx";
+import Notifications from "./DeveloperPages/pages/Developer/Notifications.jsx";
+import Help from "./DeveloperPages/pages/Developer/Help.jsx";
+import Settings from "./DeveloperPages/pages/Developer/Settings.jsx";
+
+import { getAuthToken } from "./DeveloperPages/api/apiClient.js";
+import { Toaster } from "react-hot-toast";
+
+const AdminPrivateRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
   return token ? children : <Navigate to="/admin/login" replace />;
 };
 
+const DeveloperPrivateRoute = ({ children }) => {
+  const token = getAuthToken();
+  return token ? children : <Navigate to="/developer/login" replace />;
+};
 
 const Layout = ({ children }) => {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith("/admin");
+  const isDeveloperPage = location.pathname.startsWith("/developer");
 
   return (
     <>
-      {!isAdminPage && <Navbar />}
-      {!isAdminPage && <WhatsAppButton />}
+      {!isAdminPage && !isDeveloperPage && <Navbar />}
+      {!isAdminPage && !isDeveloperPage && <WhatsAppButton />}
       {children}
-      {!isAdminPage && <Footer />}
+      {!isAdminPage && !isDeveloperPage && <Footer />}
     </>
   );
 };
@@ -57,8 +83,6 @@ const App = () => {
               </>
             }
           />
-
-          
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/service/:serviceId" element={<ServiceDetails />} />
           <Route path="/technology/:techId" element={<TechnologyDetails />} />
@@ -66,17 +90,71 @@ const App = () => {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/register" element={<AdminRegister />} />
 
+          <Route path="/developer/login" element={<DeveloperLogin />} />
+          <Route path="/developer/register" element={<DeveloperRegister />} />
+
           <Route
             path="/admin"
             element={
-              
+              <AdminPrivateRoute>
                 <Dashboard />
-              
+              </AdminPrivateRoute>
+            }
+          />
+
+          <Route
+            path="/developer"
+            element={
+              <DeveloperPrivateRoute>
+                <DeveloperDashboard />
+              </DeveloperPrivateRoute>
+            }
+          />
+          <Route
+            path="/developer/requests"
+            element={
+              <DeveloperPrivateRoute>
+                <ProjectRequests />
+              </DeveloperPrivateRoute>
+            }
+          />
+          <Route
+            path="/developer/summary"
+            element={
+              <DeveloperPrivateRoute>
+                <ProjectSummary />
+              </DeveloperPrivateRoute>
+            }
+          />
+          <Route
+            path="/developer/notifications"
+            element={
+              <DeveloperPrivateRoute>
+                <Notifications />
+              </DeveloperPrivateRoute>
+            }
+          />
+          <Route
+            path="/developer/help"
+            element={
+              <DeveloperPrivateRoute>
+                <Help />
+              </DeveloperPrivateRoute>
+            }
+          />
+          <Route
+            path="/developer/settings"
+            element={
+              <DeveloperPrivateRoute>
+                <Settings />
+              </DeveloperPrivateRoute>
             }
           />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+
+        <Toaster position="top-right" />
       </Layout>
     </Router>
   );

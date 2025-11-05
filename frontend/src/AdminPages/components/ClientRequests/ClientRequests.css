@@ -22,8 +22,9 @@ h2 {
 
 /* Summary Cards */
 .summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: grid !important;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 2fr)) !important;
   gap: 15px;
   margin-bottom: 20px;
 }

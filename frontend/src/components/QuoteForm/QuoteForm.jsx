@@ -10,7 +10,7 @@ const QuoteForm = ({ setShowQuote }) => {
     name: "",
     email: "",
     phone: "",
-    service: "App Development",
+    serviceType: "App Development",
     message: "",
   });
 
@@ -27,16 +27,13 @@ const QuoteForm = ({ setShowQuote }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       const response = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       const data = await response.json();
-
       if (response.ok) {
         Swal.fire({
           icon: "success",
@@ -53,7 +50,7 @@ const QuoteForm = ({ setShowQuote }) => {
           confirmButtonColor: "#d33",
         });
       }
-    } catch (err) {
+    } catch {
       Swal.fire({
         icon: "error",
         title: "Network Error",
@@ -103,12 +100,12 @@ const QuoteForm = ({ setShowQuote }) => {
             disabled={isDisabled}
           />
           <div className="form-group">
-            <label htmlFor="service">Service Required</label>
+            <label htmlFor="serviceType">Service Required</label>
             <div className="input-wrapper">
               <select
-                id="service"
+                id="serviceType"
                 required
-                value={formData.service}
+                value={formData.serviceType}
                 onChange={handleChange}
                 disabled={isDisabled}
               >

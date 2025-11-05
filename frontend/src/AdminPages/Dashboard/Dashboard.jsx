@@ -6,7 +6,7 @@ import AdminBlogs from "../components/Blogs/Blogs.jsx";
 import ClientRequests from "../components/ClientRequests/ClientRequests.jsx";
 import ProjectAssignment from "../components/ProjectAssignment/ProjectAssignment.jsx";
 import Analytics from "../components/Analytics/Analytics.jsx";
-import Settings from "../components/Settings/Settings.jsx";
+import ProjectSummary from "../components/ProjectSummary/ProjectSummary.jsx";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import {
@@ -143,8 +143,8 @@ const Dashboard = () => {
         return <ClientRequests />;
       case "analytics":
         return <Analytics />;
-      case "settings":
-        return <Settings />;
+      case "project-summary":
+        return <ProjectSummary />;
       case "profile":
         return <AdminProfile />;
       case "project-assignment":
