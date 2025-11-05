@@ -1,0 +1,65 @@
+.developer-login-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1d2671, #c33764);
+  font-family: "Poppins", sans-serif;
+}
+
+.developer-login-form {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 350px;
+  text-align: center;
+}
+
+.developer-login-form h2 {
+  margin-bottom: 20px;
+  color: #1d2671;
+}
+
+.developer-login-form .icon {
+  color: #c33764;
+  margin-right: 8px;
+}
+
+.developer-login-form input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.3s;
+}
+
+.developer-login-form input:focus {
+  border-color: #c33764;
+  box-shadow: 0 0 5px #c33764;
+}
+
+.developer-login-form button {
+  background: #c33764;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  margin-top: 10px;
+}
+
+.developer-login-form button:hover {
+  background: #a02b50;
+}
+
+.message {
+  margin-top: 12px;
+  color: #e74c3c;
+  font-size: 14px;
+}

@@ -1,47 +1,125 @@
 .service-details {
-  padding-top: 100px;
-  text-align: center;
+  background-color: #f8f9fc;
+  padding-bottom: 80px;
 }
 
 .service-banner {
   position: relative;
-}
-
-.service-banner img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover;
-  
-}
-
-.service-banner h1 {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  text-align: center;
+  background: linear-gradient(to right, #0d47a1, #8219d2);
   color: #fff;
-  font-size: 2.5rem;
+  padding: 80px 20px;
 }
 
-.service-desc {
+.service-banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.25;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.service-banner-content {
+  position: relative;
   max-width: 900px;
-  margin: 40px auto;
+  margin: 0 auto;
+  z-index: 2;
+}
+
+.service-banner-content h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.service-banner-content p {
   font-size: 1.1rem;
-  color: #333;
+  line-height: 1.8;
 }
 
-.service-projects {
-  margin: 50px auto;
+.service-detail-container {
   max-width: 1000px;
+  margin: 60px auto 0;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+  padding: 40px;
 }
 
-.service-projects h2 {
+.service-section {
+  margin-bottom: 40px;
+}
+
+.service-section h2 {
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 10px;
+  border-left: 4px solid #1976d2;
+  padding-left: 10px;
+}
+
+.service-section p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  margin-top: 5px;
+}
+
+.service-list {
+  list-style-type: disc;
+  margin: 15px 0 0 25px;
+  color: #444;
+}
+
+.service-list li {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.service-not-found {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.service-not-found h2 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.service-not-found p {
+  font-size: 1rem;
+  color: #555;
   margin-bottom: 20px;
 }
 
-.project-slide img {
-  width: 100%;
-  border-radius: 10px;
-  height: 250px;
-  object-fit: cover;
+.service-not-found button {
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.service-not-found button:hover {
+  background: #0d47a1;
+}
+
+@media (max-width: 768px) {
+  .service-banner-content h1 {
+    font-size: 2rem;
+  }
+  .service-banner-content p {
+    font-size: 1rem;
+  }
+  .service-detail-container {
+    padding: 25px;
+  }
+  .service-section h2 {
+    font-size: 1.3rem;
+  }
 }

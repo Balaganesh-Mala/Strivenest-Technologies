@@ -13,14 +13,51 @@ const ClientRequests = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("adminToken");
+
+  // Fetch Client Requests
   const fetchClients = async () => {
+    if (!token) {
+      MySwal.fire("Unauthorized", "Please log in as admin first.", "warning");
+      return;
+    }
+
     setLoading(true);
     try {
-      const res = await fetch(API);
+      const res = await fetch(API, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          MySwal.fire("Session Expired", "Please log in again.", "error");
+          localStorage.removeItem("adminToken");
+        } else {
+          MySwal.fire("Error", "Failed to fetch requests.", "error");
+        }
+        return;
+      }
+
       const data = await res.json();
-      if (res.ok) setClients(data);
+
+      // Handle if backend returns {quotes: [...]}
+      const quotes = Array.isArray(data)
+  ? data
+  : data.data || data.quotes || [];
+      console.log(quotes)
+
+      if (quotes.length > 0) {
+        setClients(quotes);
+      } else {
+        setClients([]);
+      }
     } catch (error) {
       console.error("Error fetching client requests:", error);
+      MySwal.fire("Error", "Server connection failed.", "error");
     } finally {
       setLoading(false);
     }
@@ -30,47 +67,47 @@ const ClientRequests = () => {
     fetchClients();
   }, []);
 
+  // Update Status (Accept / Decline)
   const handleAction = async (id, action) => {
-    const actionText = action === "Accepted" ? "accept" : "decline";
-
-    MySwal.fire({
-      title: `Are you sure you want to ${actionText} this request?`,
+    const confirm = await MySwal.fire({
+      title: `Are you sure you want to ${action.toLowerCase()} this request?`,
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: action === "Accepted" ? "#10b981" : "#ef4444",
       cancelButtonColor: "#6b7280",
-      confirmButtonText: `Yes, ${actionText} it!`,
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          const res = await fetch(`${API}/${id}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: action }),
-          });
-
-          if (res.ok) {
-            setClients((prev) =>
-              prev.map((c) => (c._id === id ? { ...c, status: action } : c))
-            );
-
-            MySwal.fire({
-              icon: "success",
-              title: `Request ${actionText}ed successfully!`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          } else {
-            MySwal.fire("Error", "Failed to update request.", "error");
-          }
-        } catch (error) {
-          console.error("Error updating status:", error);
-          MySwal.fire("Error", "Server connection failed.", "error");
-        }
-      }
+      confirmButtonText: `Yes, ${action.toLowerCase()} it!`,
     });
+
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const res = await fetch(`${API}/${id}/status`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: action }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        MySwal.fire("Error", err.message || "Failed to update request.", "error");
+        return;
+      }
+
+      setClients((prev) =>
+        prev.map((c) => (c._id === id ? { ...c, status: action } : c))
+      );
+
+      MySwal.fire("Success", `Request ${action.toLowerCase()} successfully!`, "success");
+    } catch (error) {
+      console.error(error);
+      MySwal.fire("Error", "Server connection failed.", "error");
+    }
   };
 
+  // Search filter
   const filteredClients = clients.filter((client) => {
     const search = searchTerm.trim().toLowerCase();
     return (
@@ -79,23 +116,21 @@ const ClientRequests = () => {
     );
   });
 
+  // Summary counts
   const total = clients.length;
   const accepted = clients.filter((c) => c.status === "Accepted").length;
   const declined = clients.filter((c) => c.status === "Declined").length;
-  const pending = clients.filter((c) => c.status === "Pending").length;
-  const assigned = clients.filter((c) => c.status === "Assigned").length;
+  const pending = clients.filter((c) => c.status === "Pending" || !c.status).length;
 
   return (
     <div className="client-requests-container">
       <h2>Client Requests</h2>
-      <p className="subtitle">
-        Manage incoming client quotes and project requests.
-      </p>
+      <p className="subtitle">Manage and track all client quote requests.</p>
 
       <div className="summary-cards">
         <div className="summary-card total">
           <h3>{total}</h3>
-          <p>Total Requests</p>
+          <p>Total</p>
         </div>
         <div className="summary-card pending">
           <h3>{pending}</h3>
@@ -108,10 +143,6 @@ const ClientRequests = () => {
         <div className="summary-card declined">
           <h3>{declined}</h3>
           <p>Declined</p>
-        </div>
-        <div className="summary-card assigned">
-          <h3>{assigned}</h3>
-          <p>Assigned</p>
         </div>
       </div>
 
@@ -128,16 +159,9 @@ const ClientRequests = () => {
       <div className="table-container">
         {loading ? (
           <div className="loader-container">
-            <ThreeDots
-              height="70"
-              width="70"
-              radius="9"
-              color="#007bff"
-              ariaLabel="three-dots-loading"
-              visible={true}
-            />
+            <ThreeDots height="70" width="70" color="#007bff" visible={true} />
           </div>
-        ) : clients.length === 0 ? (
+        ) : filteredClients.length === 0 ? (
           <div className="no-data">
             <img
               src="https://ik.imagekit.io/izqq5ffwt/ChatGPT%20Image%20Nov%201,%202025,%2010_36_03%20PM.png"
@@ -147,8 +171,6 @@ const ClientRequests = () => {
             <h3>No Requests Found</h3>
             <p>There are no client requests available yet.</p>
           </div>
-        ) : filteredClients.length === 0 ? (
-          <p className="no-results">No matching requests found.</p>
         ) : (
           <table className="client-table">
             <thead>
@@ -156,9 +178,9 @@ const ClientRequests = () => {
                 <th>Client Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Service Type</th>
+                <th>Service</th>
                 <th>Message</th>
-                <th>Date Submitted</th>
+                <th>Date</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
@@ -166,29 +188,27 @@ const ClientRequests = () => {
             <tbody>
               {filteredClients.map((client) => (
                 <tr key={client._id}>
-                  <td>{client.name}</td>
-                  <td>{client.email}</td>
-                  <td>{client.phone}</td>
-                  <td>{client.service}</td>
+                  <td>{client.name || "—"}</td>
+                  <td>{client.email || "—"}</td>
+                  <td>{client.phone || "—"}</td>
+                  <td>{client.serviceType || "—"}</td>
                   <td>
-                    {`${client.message?.slice(0, 40)}${
-                      client.message?.length > 40 ? "..." : ""
-                    }`}
-                  </td>
-                  <td>{new Date(client.createdAt).toLocaleDateString()}</td>
-                  <td>
-                    {client.status === "Accepted" ? (
-                      <span className="status accepted">Accepted</span>
-                    ) : client.status === "Declined" ? (
-                      <span className="status declined">Declined</span>
-                    ) : client.status === "Assigned" ? (
-                      <span className="status assigned">Assigned</span>
-                    ) : (
-                      <span className="status pending">Pending</span>
-                    )}
+                    {client.message?.length > 40
+                      ? client.message.slice(0, 40) + "..."
+                      : client.message || "—"}
                   </td>
                   <td>
-                    {client.status === "Pending" && (
+                    {client.createdAt
+                      ? new Date(client.createdAt).toLocaleDateString()
+                      : "—"}
+                  </td>
+                  <td>
+                    <span className={`status ${client.status?.toLowerCase() || "pending"}`}>
+                      {client.status || "Pending"}
+                    </span>
+                  </td>
+                  <td>
+                    {client.status === "Pending" || !client.status ? (
                       <div className="action-btns">
                         <button
                           className="accept-btn"
@@ -203,9 +223,8 @@ const ClientRequests = () => {
                           <FaTimesCircle />
                         </button>
                       </div>
-                    )}
-                    {client.status === "Assigned" && (
-                      <span className="assigned-text">Assigned</span>
+                    ) : (
+                      <span className="assigned-text">{client.status}</span>
                     )}
                   </td>
                 </tr>

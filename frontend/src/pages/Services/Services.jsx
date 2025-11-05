@@ -21,7 +21,7 @@ const Services = () => {
       color: "#3c32aa",
       textColor: "#ffffff",
       content:
-        "Looking for the best Mobile App Development Company in Hyderabad? Analogue IT Solutions is your trusted partner for turning ideas into powerful mobile apps. We specialize in Android, iOS, and cross-platform development, delivering fast, scalable, and user-friendly solutions. Our expert team focuses on UI/UX design, smooth performance, and secure architecture to provide exceptional user experiences. From startups to enterprises, we serve industries like healthcare, e-commerce, travel, and logistics. Covering the complete app development lifecycle, we ensure precision at every stage. Businesses choose us because we build apps that engage users, strengthen brands, and drive business growth.",
+        "Looking for the best App Development Company in Anantapur? Strivenest Technologies specializes in creating powerful, high-performance mobile applications for Android, iOS, and cross-platform solutions using React Native and Flutter. We build custom mobile apps that are fast, secure, and user-friendly—designed to boost engagement, strengthen brand identity, and drive measurable business results. As a trusted mobile app development company in Anantapur, we deliver innovative, scalable, and visually stunning apps that work seamlessly across devices. From concept to deployment, we transform ideas into digital products that help startups, SMEs, and enterprises accelerate growth in today’s mobile-first world.",
       img: "https://ik.imagekit.io/iiz6sw7ik/people-taking-part-business-event.jpg?updatedAt=1761647689828",
     },
     {
@@ -29,7 +29,7 @@ const Services = () => {
       color: "#fdf2bcff",
       textColor: "#333",
       content:
-        "Looking for the best Mobile App Development Company in Hyderabad? Analogue IT Solutions is your trusted partner for turning ideas into powerful mobile apps. We specialize in Android, iOS, and cross-platform development, delivering fast, scalable, and user-friendly solutions. Our expert team focuses on UI/UX design, smooth performance, and secure architecture to provide exceptional user experiences.From startups to enterprises, we serve industries like healthcare, e-commerce, travel, and logistics. Covering the complete app development lifecycle, we ensure precision at every stage. Businesses choose us because we build apps that engage users, strengthen brands, and drive business growth.",
+        "Looking for the best Web Development Company in Anantapur? Strivenest Technologies delivers modern, responsive, and SEO-optimized websites that help businesses build a strong digital presence and achieve measurable growth. Our expert team specializes in developing business websites, e-commerce platforms, web portals, and custom web applications tailored to your brand and goals. We focus on speed, security, and scalability, ensuring seamless performance across all devices and browsers. As a trusted website development company in Anantapur, we combine creativity with cutting-edge technologies like React.js, Node.js, and Python to craft web solutions that engage visitors, enhance conversions, and elevate your online identity. Partner with Strivenest Technologies to turn your ideas into powerful, results-driven web experiences.",
       img: "https://via.placeholder.com/250x150",
     },
     {
@@ -37,23 +37,15 @@ const Services = () => {
       color: "#c6e3ffff",
       textColor: "#333",
       content:
-        "Looking for the best Website Development Company in Hyderabad? Analogue IT Solutions creates websites that not only look great but also perform, engage, and deliver measurable results. Our services include business websites, e-commerce platforms, portals, and custom web solutions tailored to your brand. We prioritize speed, security, SEO-friendly structures, and responsive design to ensure smooth performance across all devices. As a trusted Website Development Company in Hyderabad, we work with startups, SMEs, and enterprises to build strong online identities. Clients choose us because we transform ideas into powerful digital platforms that drive conversions, build trust, and accelerate growth.",
+        "Looking for the best Cloud Services Company in Anantapur? Strivenest Technologies provides scalable, secure, and cost-efficient cloud solutions that empower businesses to modernize their IT infrastructure and accelerate digital transformation. We specialize in AWS, Google Cloud, Microsoft Azure, and Docker to deploy, manage, and optimize applications with unmatched reliability and performance. Our cloud experts design customized architectures for hosting, data storage, DevOps automation, and application scalability, ensuring high availability and seamless performance. As a trusted cloud services provider in Anantapur, we help startups, SMEs, and enterprises migrate to the cloud with confidence—enhancing security, reducing costs, and improving agility. With Strivenest Technologies, future-proof your business through intelligent, scalable, and cloud-native solutions.",
       img: "https://via.placeholder.com/250x150",
     },
     {
       title: "Marketing",
       color: "#f97433",
       content:
-        "Looking for the best Website Development Company in Hyderabad? Analogue IT Solutions creates websites that not only look great but also perform, engage, and deliver measurable results. Our services include business websites, e-commerce platforms, portals, and custom web solutions tailored to your brand. We prioritize speed, security, SEO-friendly structures, and responsive design to ensure smooth performance across all devices. As a trusted Website Development Company in Hyderabad, we work with startups, SMEs, and enterprises to build strong online identities. Clients choose us because we transform ideas into powerful digital platforms that drive conversions, build trust, and accelerate growth.",
+        "Looking for the best Digital Marketing Company in Anantapur? Strivenest Technologies helps businesses grow online through result-driven digital marketing strategies that boost visibility, engagement, and conversions. Our expert team specializes in SEO, Google Ads, Social Media Marketing, Content Marketing, and Branding to help you reach your target audience effectively. We combine data-driven insights with creative execution to deliver measurable results and long-term brand growth. As a trusted digital marketing agency in Anantapur, we craft personalized campaigns that enhance your online presence, improve ROI, and establish a strong digital identity. Partner with Strivenest Technologies to turn your brand into a powerful online success story through smart marketing that drives real business impact.",
       img: "https://via.placeholder.com/250x150",
-    },
-    {
-      title: "App Development",
-      color: "#090058ff",
-      textColor: "#ffffff",
-      content:
-        "Looking for the best Mobile App Development Company in Hyderabad? Analogue IT Solutions is your trusted partner for turning ideas into powerful mobile apps. We specialize in Android, iOS, and cross-platform development, delivering fast, scalable, and user-friendly solutions. Our expert team focuses on UI/UX design, smooth performance, and secure architecture to provide exceptional user experiences. From startups to enterprises, we serve industries like healthcare, e-commerce, travel, and logistics. Covering the complete app development lifecycle, we ensure precision at every stage. Businesses choose us because we build apps that engage users, strengthen brands, and drive business growth.",
-      img: "https://ik.imagekit.io/iiz6sw7ik/people-taking-part-business-event.jpg?updatedAt=1761647689828",
     },
   ];
 

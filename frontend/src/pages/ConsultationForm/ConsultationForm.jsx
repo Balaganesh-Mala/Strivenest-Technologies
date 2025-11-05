@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  FaUser,
-  FaEnvelope,
-  FaPhone,
-  FaServicestack,
-} from "react-icons/fa";
+import { FaUser, FaEnvelope, FaPhone, FaServicestack } from "react-icons/fa";
 import Swal from "sweetalert2";
 import "./ConsultationForm.css";
 
@@ -15,7 +10,7 @@ const ConsultationForm = () => {
     name: "",
     email: "",
     phone: "",
-    service: "",
+    serviceType: "",
     message: "",
   });
 
@@ -46,7 +41,7 @@ const ConsultationForm = () => {
           name: "",
           email: "",
           phone: "",
-          service: "",
+          serviceType: "",
           message: "",
         });
       } else {
@@ -117,18 +112,18 @@ const ConsultationForm = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="service">Service Required</label>
+          <label htmlFor="serviceType">Service Required</label>
           <div className="input-wrapper">
             <FaServicestack className="form-icon" />
             <select
-              id="service"
-              name="service"
+              id="serviceType"
+              name="serviceType"
               className="input-controls"
-              value={formData.service}
+              value={formData.serviceType}
               onChange={handleChange}
               required
             >
-              <option value="">Select service tyoe</option>
+              <option value="">Select service type</option>
               <option value="Web Development">Web Development</option>
               <option value="App Development">App Development</option>
               <option value="Cloud Services">Cloud Services</option>

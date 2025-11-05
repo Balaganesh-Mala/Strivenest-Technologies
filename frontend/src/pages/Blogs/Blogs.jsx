@@ -10,6 +10,7 @@ const Blogs = () => {
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // ✅ Fetch blogs when component mounts
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -18,18 +19,25 @@ const Blogs = () => {
     setLoading(true);
     try {
       const res = await axios.get(API);
-      setBlogs(res.data);
+      // ✅ Ensure backend returns { success: true, data: [...] }
+      if (res.data.success) {
+        setBlogs(res.data.data);
+      } else {
+        setBlogs([]);
+      }
     } catch (err) {
       console.error("Error fetching blogs:", err);
+      setBlogs([]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="blog" className="blogs-section">
+    <section id="blogs" className="blogs-section">
       <h2 className="blogs-title">Our Latest Blogs</h2>
 
+      {/* ✅ Loader */}
       {loading ? (
         <div className="loader-container">
           <ThreeDots
@@ -42,28 +50,46 @@ const Blogs = () => {
           />
         </div>
       ) : !selectedBlog ? (
+        // ✅ Blog Grid
         <div className="blogs-grid">
           {blogs.length === 0 ? (
             <div className="no-data">
               <img
                 src="https://ik.imagekit.io/izqq5ffwt/ChatGPT%20Image%20Nov%201,%202025,%2010_36_03%20PM.png"
-                alt="No Data"
+                alt="No Blogs"
               />
               <p>No blogs available</p>
             </div>
           ) : (
             blogs.map((blog) => (
               <div key={blog._id} className="blog-card">
-                <img src={blog.image} alt={blog.title} className="blog-image" />
+                <img
+                  src={
+                    blog.image ||
+                    "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
+                  }
+                  alt={blog.title}
+                  className="blog-image"
+                />
                 <div className="blog-content">
                   <h3>{blog.title}</h3>
-                  <p className="blog-date">{blog.date}</p>
-                  <p className="blog-desc">{blog.description}</p>
+                  <p className="blog-date">
+                    {new Date(blog.createdAt).toLocaleDateString("en-IN", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <p className="blog-desc">
+                    {blog.content.length > 120
+                      ? blog.content.substring(0, 120) + "..."
+                      : blog.content}
+                  </p>
                   <button
                     onClick={() => setSelectedBlog(blog)}
                     className="read-more"
                   >
-                    Read More
+                    Read More →
                   </button>
                 </div>
               </div>
@@ -71,17 +97,27 @@ const Blogs = () => {
           )}
         </div>
       ) : (
+        // ✅ Blog Detail View
         <div className="blog-detail">
           <button className="back-btn" onClick={() => setSelectedBlog(null)}>
             ← Back to Blogs
           </button>
           <img
-            src={selectedBlog.image}
+            src={
+              selectedBlog.image ||
+              "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
+            }
             alt={selectedBlog.title}
             className="detail-image"
           />
           <h2>{selectedBlog.title}</h2>
-          <p className="blog-date">{selectedBlog.date}</p>
+          <p className="blog-date">
+            {new Date(selectedBlog.createdAt).toLocaleDateString("en-IN", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
           <p className="blog-full-content">{selectedBlog.content}</p>
         </div>
       )}

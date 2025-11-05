@@ -77,7 +77,7 @@ const Navbar = () => {
                   <ul>
                     <li onClick={() => goToTech("android")}><FaAndroid /> Android</li>
                     <li onClick={() => goToTech("ios")}><FaApple /> iOS</li>
-                    <li onClick={() => goToTech("react-native")}><FaReact /> React Native</li>
+                    <li onClick={() => goToTech("reactnative")}><FaReact /> React Native</li>
                     <li onClick={() => goToTech("flutter")}><SiFlutter /> Flutter</li>
                   </ul>
                 </li>
@@ -99,7 +99,7 @@ const Navbar = () => {
                   <strong>Cloud Services</strong>
                   <ul>
                     <li onClick={() => goToTech("aws")}><FaAws /> AWS</li>
-                    <li onClick={() => goToTech("gcloud")}><FaCloud /> Google Cloud</li>
+                    <li onClick={() => goToTech("cloud")}><FaCloud /> Google Cloud</li>
                     <li onClick={() => goToTech("docker")}><FaDocker /> Docker</li>
                   </ul>
                 </li>
@@ -173,7 +173,7 @@ const Navbar = () => {
                   <strong>Cloud Services</strong>
                   <ul>
                     <li onClick={() => { goToTech("aws"); }}>AWS</li>
-                    <li onClick={() => { goToTech("gcloud"); }}>Google Cloud</li>
+                    <li onClick={() => { goToTech("cloud"); }}>Google Cloud</li>
                     <li onClick={() => { goToTech("docker"); }}>Docker</li>
                   </ul>
                 </div>
