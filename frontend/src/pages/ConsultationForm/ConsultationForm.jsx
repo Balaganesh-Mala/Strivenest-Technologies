@@ -2,7 +2,8 @@ import { useState } from "react";
 import { FaUser, FaEnvelope, FaPhone, FaServicestack } from "react-icons/fa";
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:5000/api/client/request";
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/client/request`;
+
 
 export default function ConsultationForm() {
   const [formData, setFormData] = useState({

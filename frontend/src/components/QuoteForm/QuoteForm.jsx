@@ -11,7 +11,8 @@ import {
 } from "react-icons/io5";
 import Swal from "sweetalert2";
 
-const API_URL = "http://localhost:5000/api/client/request";
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/client/request`;
+
 
 export default function QuoteForm({ setShowQuote }) {
   const [step, setStep] = useState(1);
