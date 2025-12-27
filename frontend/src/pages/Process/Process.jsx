@@ -1,125 +1,143 @@
-import React, { useState } from "react";
-import Slider from "react-slick";
+import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import "./Process.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const steps = [
   {
     title: "Step 1: Requirement",
     img: "https://ik.imagekit.io/izqq5ffwt/2082303.jpg",
-    text: "We start by understanding your business goals, audience, and project scope. Our team conducts deep research and discussions to gather all necessary details to create a solid foundation for your project."
+    text: "We understand your business goals, audience, and requirements through structured discussions.",
   },
   {
     title: "Step 2: Agreement",
     img: "https://ik.imagekit.io/izqq5ffwt/Screenshot%202025-10-30%20092306.png",
-    text: "Once the requirements are finalized, we establish a transparent agreement covering the project scope, timeline, and deliverables — ensuring mutual clarity and trust."
+    text: "We finalize scope, timeline, and deliverables with complete transparency.",
   },
   {
     title: "Step 3: UI & UX Design",
     img: "https://ik.imagekit.io/izqq5ffwt/5881573.jpg",
-    text: "Our design team crafts intuitive, engaging, and modern UI/UX layouts to ensure your product not only looks great but also delivers a seamless user experience."
+    text: "Our designers craft intuitive and modern user experiences focused on usability.",
   },
   {
     title: "Step 4: Development",
     img: "https://ik.imagekit.io/izqq5ffwt/4380747.jpg",
-    text: "We build scalable, high-performance web and mobile applications using modern technologies while following clean coding standards."
+    text: "We build scalable, high-performance applications using clean architecture.",
   },
   {
     title: "Step 5: Testing",
     img: "https://ik.imagekit.io/izqq5ffwt/Screenshot%202025-10-30%20093224.png",
-    text: "Our QA experts conduct rigorous testing to identify and fix bugs, ensuring top-quality performance, speed, and security before deployment."
+    text: "Thorough QA testing ensures performance, security, and reliability.",
   },
   {
     title: "Step 6: Deployment & Live",
     img: "https://ik.imagekit.io/izqq5ffwt/7090038.jpg",
-    text: "We deploy your project smoothly to your preferred environment and monitor the live performance, ensuring stability and ongoing support."
-  }
+    text: "We deploy smoothly and provide ongoing support after launch.",
+  },
 ];
 
-const Process = () => {
+export default function Process() {
+  const duplicated = [...steps, ...steps];
   const [current, setCurrent] = useState(0);
 
-  const settings = {
-    dots: true,
-    infinite: true,
-    autoplay: true,
-    autoplaySpeed: 2000,
-    speed: 700,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    centerMode: true,
-    centerPadding: "0px",
-    pauseOnHover: true,
-    beforeChange: (_, newIndex) => setCurrent(newIndex),
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
-  };
-
   return (
-    <section className="process-section">
-      <h2 className="process-title">Our Process</h2>
-      <h3 className="process-subtitle">{steps[current].title}</h3>
-
-      <div className="slider-container">
-        <Slider {...settings}>
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={`slide-card ${index === current ? "active" : ""}`}
-            >
-              <img src={step.img} alt={step.title} />
-            </div>
-          ))}
-        </Slider>
+    <section className="py-24 px-4 bg-gradient-to-br from-indigo-950 via-indigo-900 to-indigo-800 text-white overflow-hidden">
+      {/* HEADER */}
+      <div className="text-center max-w-3xl mx-auto mb-14">
+        <h2 className="text-sm font-semibold tracking-widest text-indigo-300 uppercase">
+          Our Workflow
+        </h2>
+        <h3 className="mt-2 text-3xl sm:text-4xl font-bold">
+          How We Deliver Excellence
+        </h3>
+        <p className="mt-4 text-indigo-200 text-sm sm:text-base">
+          A structured, transparent, and efficient development process designed
+          for success.
+        </p>
       </div>
 
-      <p className="process-text">{steps[current].text}</p>
+      {/* SLIDER */}
+      <div className="relative max-w-6xl mx-auto">
+        <Swiper
+          modules={[Autoplay, Navigation, Pagination]}
+          loop
+          speed={8000}
+          autoplay={{ delay: 0, disableOnInteraction: false }}
+          slidesPerView="auto"
+          spaceBetween={32}
+          /* ✅ CENTER FIX */
+          centeredSlides
+          centeredSlidesBounds
+          initialSlide={Math.floor(steps.length / 2)}
+          navigation={{
+            nextEl: ".process-next",
+            prevEl: ".process-prev",
+          }}
+          pagination={{ clickable: true }}
+          onSlideChange={(swiper) =>
+            setCurrent(swiper.realIndex % steps.length)
+          }
+          className="pb-12"
+        >
+          {duplicated.map((step, i) => {
+            const active = current === i % steps.length;
+
+            return (
+              <SwiperSlide
+                key={i}
+                className="!w-[240px] sm:!w-[280px] flex justify-center"
+              >
+                <div
+                  className={`rounded-2xl bg-white transition-all duration-300
+                    ${
+                      active
+                        ? "scale-105 shadow-2xl opacity-100"
+                        : "scale-90 opacity-50"
+                    }
+                  `}
+                >
+                  <div className="h-[180px] flex items-center justify-center p-4">
+                    <img
+                      src={step.img}
+                      alt={step.title}
+                      className="h-full object-contain rounded-xl"
+                    />
+                  </div>
+
+                  <div className="px-4 pb-4 text-center">
+                    <p className="text-xs font-semibold text-indigo-600">
+                      {step.title}
+                    </p>
+                  </div>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+
+        {/* NAVIGATION */}
+        <button className="process-prev absolute left-0 top-1/2 -translate-y-1/2 bg-white text-indigo-700 w-10 h-10 flex items-center justify-center rounded-full shadow hover:bg-indigo-100 transition z-20">
+          <FaArrowLeft />
+        </button>
+
+        <button className="process-next absolute right-0 top-1/2 -translate-y-1/2 bg-white text-indigo-700 w-10 h-10 flex items-center justify-center rounded-full shadow hover:bg-indigo-100 transition z-20">
+          <FaArrowRight />
+        </button>
+      </div>
+
+      {/* DESCRIPTION */}
+      <div className="mt-12 max-w-2xl mx-auto text-center">
+        <h4 className="text-lg font-semibold text-white">
+          {steps[current].title}
+        </h4>
+        <p className="mt-3 text-indigo-200 text-sm leading-relaxed">
+          {steps[current].text}
+        </p>
+      </div>
     </section>
   );
-};
-
-function NextArrow({ onClick }) {
-  return (
-    <div className="arrow next" onClick={onClick}>
-      <FaArrowRight />
-    </div>
-  );
 }
-
-function PrevArrow({ onClick }) {
-  return (
-    <div className="arrow prev" onClick={onClick}>
-      <FaArrowLeft />
-    </div>
-  );
-}
-
-export default Process;

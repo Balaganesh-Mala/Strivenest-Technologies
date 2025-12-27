@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import QuoteForm from "../QuoteForm/QuoteForm";
 import {
@@ -9,192 +9,213 @@ import {
   FaCloud,
   FaPenNib,
   FaBullhorn,
+  FaAndroid,
+  FaApple,
+  FaReact,
+  FaNodeJs,
   FaPython,
   FaHtml5,
   FaCss3Alt,
-  FaReact,
-  FaNodeJs,
   FaJsSquare,
   FaDatabase,
-  FaAndroid,
-  FaApple,
   FaAws,
   FaDocker,
 } from "react-icons/fa";
 import { SiFlutter } from "react-icons/si";
-import "./Navbar.css";
 
-const Navbar = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [openSection, setOpenSection] = useState("");
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [openSection, setOpenSection] = useState(null);
   const [showQuote, setShowQuote] = useState(false);
   const navigate = useNavigate();
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
-  const toggleQuoteForm = () => setShowQuote(!showQuote);
-  const toggleSection = (section) =>
-    setOpenSection(openSection === section ? "" : section);
-
-  const goToService = (id) => {
-    navigate(`/service/${id}`);
-    setIsSidebarOpen(false);
-  };
-
-  const goToTech = (id) => {
-    navigate(`/technology/${id}`);
-    setIsSidebarOpen(false);
+  const goTo = (path) => {
+    navigate(path);
+    setMobileOpen(false);
+    setOpenSection(null);
   };
 
   return (
     <>
-      <nav className="navbar">
-        <div className="navbar-container">
-          <div className="navbar-logo">
-            <Link to="/"><img src="https://ik.imagekit.io/iiz6sw7ik/IMG_20251025_123454.png?updatedAt=1761375924313" alt="website logo" /></Link>
-          </div>
+      {/* NAVBAR */}
+      <header className="fixed top-0 inset-x-0 z-50 bg-white border-b shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+          {/* LOGO */}
+          <Link to="/" className="flex items-center">
+            <img
+              src="https://ik.imagekit.io/iiz6sw7ik/IMG_20251025_123454.png?updatedAt=1761375924313"
+              alt="logo"
+              className="h-9"
+            />
+          </Link>
 
-          <ul className="nav-links">
-            <li><Link to="/">Home</Link></li>
-            <li><a href="#about">About</a></li>
+          {/* DESKTOP MENU */}
+          <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-700">
+            <Link to="/" className="hover:text-indigo-600">Home</Link>
+            <a href="#about" className="hover:text-indigo-600">About</a>
 
-            <li className="dropdown">
-              <span>Services ▾</span>
-              <ul className="dropdown-menu">
-                <li onClick={() => goToService("web")}><FaLaptopCode /> Web Development</li>
-                <li onClick={() => goToService("app")}><FaMobileAlt /> App Development</li>
-                <li onClick={() => goToService("cloud")}><FaCloud /> Cloud Service</li>
-                <li onClick={() => goToService("branding")}><FaPenNib /> Logo & Branding</li>
-                <li onClick={() => goToService("marketing")}><FaBullhorn /> Digital Marketing</li>
-              </ul>
-            </li>
+            {/* SERVICES */}
+            <div className="relative group">
+              <span className="cursor-pointer hover:text-indigo-600">
+                Services
+              </span>
+              <div className="absolute left-0 top-full mt-2 w-56 bg-white border rounded-xl shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition">
+                {[
+                  ["web", "Web Development", <FaLaptopCode />],
+                  ["app", "App Development", <FaMobileAlt />],
+                  ["cloud", "Cloud Services", <FaCloud />],
+                  ["branding", "Branding", <FaPenNib />],
+                  ["marketing", "Marketing", <FaBullhorn />],
+                ].map(([id, label, icon]) => (
+                  <button
+                    key={id}
+                    onClick={() => goTo(`/service/${id}`)}
+                    className="flex items-center gap-3 w-full px-4 py-2 hover:bg-slate-50 text-left"
+                  >
+                    {icon}
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <li className="dropdown">
-              <span>Technologies ▾</span>
-              <ul className="dropdown-menu ">
-                <div className="tech-grid">
-                <li className="tech-group">
-                  <strong>App Development</strong>
-                  <ul>
-                    <li onClick={() => goToTech("android")}><FaAndroid /> Android</li>
-                    <li onClick={() => goToTech("ios")}><FaApple /> iOS</li>
-                    <li onClick={() => goToTech("reactnative")}><FaReact /> React Native</li>
-                    <li onClick={() => goToTech("flutter")}><SiFlutter /> Flutter</li>
-                  </ul>
-                </li>
+            {/* TECHNOLOGIES */}
+            <div className="relative group">
+              <span className="cursor-pointer hover:text-indigo-600">
+                Technologies
+              </span>
 
-                <li className="tech-group">
-                  <strong>Web Development</strong>
-                  <ul>
-                    <li onClick={() => goToTech("html")}><FaHtml5 /> HTML</li>
-                    <li onClick={() => goToTech("css")}><FaCss3Alt /> CSS</li>
-                    <li onClick={() => goToTech("javascript")}><FaJsSquare /> JavaScript</li>
-                    <li onClick={() => goToTech("reactjs")}><FaReact /> React.js</li>
-                    <li onClick={() => goToTech("nodejs")}><FaNodeJs /> Node.js</li>
-                    <li onClick={() => goToTech("python")}><FaPython /> Python</li>
-                    <li onClick={() => goToTech("database")}><FaDatabase /> MongoDB / SQL</li>
-                  </ul>
-                </li>
-
-                <li className="tech-group">
-                  <strong>Cloud Services</strong>
-                  <ul>
-                    <li onClick={() => goToTech("aws")}><FaAws /> AWS</li>
-                    <li onClick={() => goToTech("cloud")}><FaCloud /> Google Cloud</li>
-                    <li onClick={() => goToTech("docker")}><FaDocker /> Docker</li>
-                  </ul>
-                </li>
-                </div>
-              </ul>
-            </li>
-
-            <li><Link to="/blogs">Blogs</Link></li>
-            <li><a href="#contact">Contact</a></li>
-
-            <li>
-              <button className="quote-btn" onClick={toggleQuoteForm}>Free Quote</button>
-            </li>
-          </ul>
-
-          <div className="menu-icon" onClick={toggleSidebar}>
-            <FaBars />
-          </div>
-        </div>
-      </nav>
-
-      <div className={`mobile-sidebar ${isSidebarOpen ? "open" : ""}`}>
-        <div className="mobile-sidebar-header">
-          <Link to="/"><img src="https://ik.imagekit.io/iiz6sw7ik/IMG_20251025_123454.png?updatedAt=1761375924313" alt="logo" /></Link>
-          <FaTimes className="close-icon" onClick={toggleSidebar} />
-        </div>
-
-        <ul className="mobile-menu">
-          <li><Link to="/" onClick={toggleSidebar}>Home</Link></li>
-          <li><a href="#about" onClick={toggleSidebar}>About</a></li>
-
-          <li className="mobile-section">
-            <button className="mobile-toggle" onClick={() => toggleSection("services")}>Services ▾</button>
-            {openSection === "services" && (
-              <ul className="mobile-sub">
-                <li onClick={() => { goToService("web"); }}>Web Development</li>
-                <li onClick={() => { goToService("app"); }}>App Development</li>
-                <li onClick={() => { goToService("cloud"); }}>Cloud Service</li>
-                <li onClick={() => { goToService("branding"); }}>Logo & Branding</li>
-                <li onClick={() => { goToService("marketing"); }}>Digital Marketing</li>
-              </ul>
-            )}
-          </li>
-
-          <li className="mobile-section">
-            <button className="mobile-toggle" onClick={() => toggleSection("technologies")}>Technologies ▾</button>
-            {openSection === "technologies" && (
-              <div className="mobile-sub tech-mobile-groups">
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-[650px] bg-white border rounded-2xl shadow-lg p-6 grid grid-cols-3 gap-6 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition">
+                {/* APP */}
                 <div>
-                  <strong>App Development</strong>
-                  <ul>
-                    <li onClick={() => { goToTech("android"); }}>Android</li>
-                    <li onClick={() => { goToTech("ios"); }}>iOS</li>
-                    <li onClick={() => { goToTech("react-native"); }}>React Native</li>
-                    <li onClick={() => { goToTech("flutter"); }}>Flutter</li>
-                  </ul>
+                  <p className="font-semibold mb-2">App</p>
+                  <TechItem icon={<FaAndroid />} label="Android" onClick={() => goTo("/technology/android")} />
+                  <TechItem icon={<FaApple />} label="iOS" onClick={() => goTo("/technology/ios")} />
+                  <TechItem icon={<FaReact />} label="React Native" onClick={() => goTo("/technology/reactnative")} />
+                  <TechItem icon={<SiFlutter />} label="Flutter" onClick={() => goTo("/technology/flutter")} />
                 </div>
+
+                {/* WEB */}
                 <div>
-                  <strong>Web Development</strong>
-                  <ul>
-                    <li onClick={() => { goToTech("html"); }}>HTML</li>
-                    <li onClick={() => { goToTech("css"); }}>CSS</li>
-                    <li onClick={() => { goToTech("javascript"); }}>JavaScript</li>
-                    <li onClick={() => { goToTech("reactjs"); }}>React.js</li>
-                    <li onClick={() => { goToTech("nodejs"); }}>Node.js</li>
-                    <li onClick={() => { goToTech("python"); }}>Python</li>
-                    <li onClick={() => { goToTech("database"); }}>MongoDB / SQL</li>
-                  </ul>
+                  <p className="font-semibold mb-2">Web</p>
+                  <TechItem icon={<FaHtml5 />} label="HTML" onClick={() => goTo("/technology/html")} />
+                  <TechItem icon={<FaCss3Alt />} label="CSS" onClick={() => goTo("/technology/css")} />
+                  <TechItem icon={<FaJsSquare />} label="JavaScript" onClick={() => goTo("/technology/javascript")} />
+                  <TechItem icon={<FaReact />} label="React" onClick={() => goTo("/technology/reactjs")} />
+                  <TechItem icon={<FaNodeJs />} label="Node.js" onClick={() => goTo("/technology/nodejs")} />
+                  <TechItem icon={<FaPython />} label="Python" onClick={() => goTo("/technology/python")} />
+                  <TechItem icon={<FaDatabase />} label="Database" onClick={() => goTo("/technology/database")} />
                 </div>
+
+                {/* CLOUD */}
                 <div>
-                  <strong>Cloud Services</strong>
-                  <ul>
-                    <li onClick={() => { goToTech("aws"); }}>AWS</li>
-                    <li onClick={() => { goToTech("cloud"); }}>Google Cloud</li>
-                    <li onClick={() => { goToTech("docker"); }}>Docker</li>
-                  </ul>
+                  <p className="font-semibold mb-2">Cloud</p>
+                  <TechItem icon={<FaAws />} label="AWS" onClick={() => goTo("/technology/aws")} />
+                  <TechItem icon={<FaCloud />} label="Google Cloud" onClick={() => goTo("/technology/cloud")} />
+                  <TechItem icon={<FaDocker />} label="Docker" onClick={() => goTo("/technology/docker")} />
                 </div>
               </div>
-            )}
-          </li>
+            </div>
 
-          <li><Link to="/blogs" onClick={toggleSidebar}>Blogs</Link></li>
-          <li><a href="#contact" onClick={toggleSidebar}>Contact</a></li>
+            <Link to="/blogs" className="hover:text-indigo-600">Blogs</Link>
+            <a href="#contact" className="hover:text-indigo-600">Contact</a>
 
-          <li>
-            <button className="quote-btn mobile-quote" onClick={() => { toggleQuoteForm(); toggleSidebar(); }}>
+            <button
+              onClick={() => setShowQuote(true)}
+              className="ml-2 px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+            >
               Free Quote
             </button>
-          </li>
-        </ul>
-      </div>
+          </nav>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="lg:hidden text-slate-700"
+          >
+            <FaBars size={22} />
+          </button>
+        </div>
+      </header>
+
+      {/* MOBILE SIDEBAR */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-50 bg-black/40">
+          <aside className="absolute left-0 top-0 h-full w-72 bg-white p-5 overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <img
+                src="https://ik.imagekit.io/iiz6sw7ik/IMG_20251025_123454.png?updatedAt=1761375924313"
+                alt="logo"
+                className="h-8"
+              />
+              <FaTimes onClick={() => setMobileOpen(false)} />
+            </div>
+
+            <MobileLink label="Home" onClick={() => goTo("/")} />
+            <MobileLink label="About" onClick={() => goTo("/#about")} />
+
+            <MobileSection
+              title="Services"
+              open={openSection === "services"}
+              onToggle={() => setOpenSection(openSection === "services" ? null : "services")}
+            >
+              <MobileLink label="Web Development" onClick={() => goTo("/service/web")} />
+              <MobileLink label="App Development" onClick={() => goTo("/service/app")} />
+              <MobileLink label="Cloud Services" onClick={() => goTo("/service/cloud")} />
+              <MobileLink label="Branding" onClick={() => goTo("/service/branding")} />
+              <MobileLink label="Marketing" onClick={() => goTo("/service/marketing")} />
+            </MobileSection>
+
+            <MobileLink label="Blogs" onClick={() => goTo("/blogs")} />
+            <MobileLink label="Contact" onClick={() => goTo("/#contact")} />
+
+            <button
+              onClick={() => {
+                setShowQuote(true);
+                setMobileOpen(false);
+              }}
+              className="mt-6 w-full py-2 rounded-lg bg-indigo-600 text-white"
+            >
+              Free Quote
+            </button>
+          </aside>
+        </div>
+      )}
 
       {showQuote && <QuoteForm setShowQuote={setShowQuote} />}
     </>
   );
-};
+}
 
-export default Navbar;
+/* ===== Helper Components ===== */
+
+const TechItem = ({ icon, label, onClick }) => (
+  <button
+    onClick={onClick}
+    className="flex items-center gap-2 text-sm text-slate-600 hover:text-indigo-600 mb-2"
+  >
+    {icon}
+    {label}
+  </button>
+);
+
+const MobileLink = ({ label, onClick }) => (
+  <button
+    onClick={onClick}
+    className="block w-full text-left py-2 text-slate-700 hover:text-indigo-600"
+  >
+    {label}
+  </button>
+);
+
+const MobileSection = ({ title, open, onToggle, children }) => (
+  <div className="mt-2">
+    <button
+      onClick={onToggle}
+      className="w-full text-left py-2 font-medium text-slate-700"
+    >
+      {title}
+    </button>
+    {open && <div className="pl-4">{children}</div>}
+  </div>
+);

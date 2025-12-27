@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react";
-import "./Home.css";
+import { useEffect, useState } from "react";
 import QuoteForm from "../../components/QuoteForm/QuoteForm";
-import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
 
-const Home = () => {
-  const titles = ["App Development", "Web Development", "Cloud Services", "Marketing"];
+export default function Home() {
+  const titles = [
+    "App Development",
+    "Web Development",
+    "Cloud Services",
+    "Marketing",
+  ];
+
   const [currentTitle, setCurrentTitle] = useState(0);
   const [showQuote, setShowQuote] = useState(false);
 
-  // Change title every 2 seconds
+  /* Rotate titles */
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTitle((prev) => (prev + 1) % titles.length);
@@ -16,82 +26,97 @@ const Home = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Show quote form after 5 seconds
+  /* Auto popup */
   useEffect(() => {
     const timer = setTimeout(() => setShowQuote(true), 5000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <section className="home-section" id="home">
-      <div className="home-container">
-        {/* Text Section */}
-        <div className="home-text">
-          <h1 className="home-heading">
+    <section className="min-h-screen bg-gradient-to-br from-slate-50 to-white flex items-center mt-10">
+      <div className="max-w-7xl mx-auto px-4 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* LEFT CONTENT */}
+        <div className="space-y-6 text-center lg:text-left">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-tight">
             Best{" "}
-            <span key={titles[currentTitle]} className="changing-text">
+            <span className="relative inline-block text-indigo-600">
               {titles[currentTitle]}
+              
             </span>
             <br />
             Company in Anantapur
           </h1>
 
-          <p className="home-description">
-            We specialize in creating and enhancing user experience through the
-            design and development of mobile and web applications. Our focus is
-            on helping businesses expand and reach their customer base by
-            collaborating with individuals and organizations to conceptualize
-            and promote their products.
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
+            We design and build high-quality mobile and web applications that
+            help businesses grow. Our mission is to turn ideas into scalable,
+            user-friendly digital products.
           </p>
 
-          <div className="social-icons">
-            <a href="#"><FaFacebook /></a>
-            <a href="#"><FaInstagram /></a>
-            <a href="#"><FaLinkedin /></a>
-            <a href="#"><FaYoutube /></a>
+          {/* SOCIALS */}
+          <div className="flex justify-center lg:justify-start gap-4 text-gray-500">
+            {[FaFacebook, FaInstagram, FaLinkedin, FaYoutube].map(
+              (Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="p-2 rounded-full border hover:bg-indigo-600 hover:text-white transition"
+                >
+                  <Icon size={16} />
+                </a>
+              )
+            )}
           </div>
 
-          <button className="blue-btn" onClick={() => setShowQuote(true)}>
-            Get a Free Quote
-          </button>
+          {/* CTA */}
+          <div>
+            <button
+              onClick={() => setShowQuote(true)}
+              className="inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-xl
+              bg-indigo-600 hover:bg-indigo-700 text-white transition shadow-md"
+            >
+              Get a Free Quote
+            </button>
+          </div>
         </div>
 
-        {/* Media Section */}
-        <div className="home-media">
+        {/* RIGHT MEDIA */}
+        <div className="relative flex justify-center">
+          {/* Decorative images */}
           <img
             src="https://ik.imagekit.io/izqq5ffwt/logo12.png"
-            alt="Left visual"
-            className="side-img left-img"
+            alt="decor"
+            className="hidden lg:block absolute -left-16 top-20 w-40 opacity-80"
           />
 
-          <div className="phone-wrapper">
+          <img
+            src="https://ik.imagekit.io/izqq5ffwt/logo23.png"
+            alt="decor"
+            className="hidden lg:block absolute -right-16 bottom-16 w-40 opacity-80"
+          />
+
+          {/* PHONE MOCKUP */}
+          <div className="relative w-64 sm:w-72">
             <video
-              className="video-content"
               src="https://ik.imagekit.io/izqq5ffwt/WhatsApp%20Video%202025-10-28%20at%2022.10.19_15489131.mp4"
               autoPlay
               loop
               muted
               playsInline
-            ></video>
+              className="rounded-[3rem] shadow-xl"
+            />
+
             <img
               src="https://ik.imagekit.io/izqq5ffwt/download.png?updatedAt=1761819335957"
               alt="Phone Frame"
-              className="phone-frame"
+              className="absolute inset-0 w-full h-full pointer-events-none"
             />
           </div>
-
-          <img
-            src="https://ik.imagekit.io/izqq5ffwt/logo23.png"
-            alt="Right visual"
-            className="side-img right-img"
-          />
         </div>
       </div>
 
-      {/* Quote Form Popup */}
+      {/* QUOTE MODAL */}
       {showQuote && <QuoteForm setShowQuote={setShowQuote} />}
     </section>
   );
-};
-
-export default Home;
+}

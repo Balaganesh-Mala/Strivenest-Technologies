@@ -70,11 +70,9 @@ export default function DeveloperDashboard() {
         />
 
         <div className="px-5 sm:px-8 py-6 space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <h2 className="text-2xl font-semibold">
-              Welcome back, {user.name} 👋
-            </h2>
-            <p className="text-sm text-gray-500">
+          <div className="flex flex-col sm:flex-row justify-end items-start sm:items-center">
+            
+            <p className="text-sm text-gray-700">
               {new Date().toLocaleDateString("en-IN", {
                 weekday: "long",
                 month: "long",

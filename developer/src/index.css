@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.btn-success {
+  @apply px-3 py-1 text-xs rounded bg-green-600 text-white hover:bg-green-700;
+}
+.btn-danger {
+  @apply px-3 py-1 text-xs rounded bg-red-600 text-white hover:bg-red-700;
+}
+.btn-outline {
+  @apply px-3 py-1 text-xs rounded border border-gray-300 hover:bg-gray-100;
+}
+.btn-purple {
+  @apply px-3 py-1 text-xs rounded bg-purple-600 text-white hover:bg-purple-700;
+}
