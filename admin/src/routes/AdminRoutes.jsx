@@ -5,7 +5,7 @@ import ProtectedRoute from "../components/layout/ProtectedRoute";
 import ClientRequests from "../pages/requests/ClientRequests";
 import Developers from "../pages/developers/Developers";
 import Projects from "../pages/projects/Projects";
-import NotFound from "../pages/Notfound";
+import NotFound from "../pages/NotFound";
 
 export default function AdminRoutes() {
   return (
