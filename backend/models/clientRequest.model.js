@@ -33,10 +33,11 @@ const clientRequestSchema = new mongoose.Schema(
       trim: true,
     },
 
-    projectDescription: {
-      type: String,
-      required: true,
-    },
+    clientProjectDescription: {
+  type: String,
+  required: true,
+},
+
 
     estimatedBudget: {
       type: Number,

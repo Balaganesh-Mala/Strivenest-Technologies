@@ -2,26 +2,25 @@ import mongoose from "mongoose";
 
 const projectSchema = new mongoose.Schema(
   {
-    /* ================= CLIENT REFERENCE ================= */
+    /* ================= REFERENCES ================= */
     clientRequest: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "ClientRequest",
       required: true,
     },
 
-    // Shared with developer (safe)
     clientId: {
       type: String,
       required: true,
       index: true,
     },
 
-    /* ================= PROJECT IDENTIFICATION ================= */
+    /* ================= IDENTIFICATION ================= */
     projectId: {
       type: String,
       unique: true,
+      required: true,
       index: true,
-      required: true, // e.g. PRJ-2025-001
     },
 
     projectTitle: {
@@ -30,12 +29,32 @@ const projectSchema = new mongoose.Schema(
       trim: true,
     },
 
-    projectDetails: {
+    /* ================= CLIENT SNAPSHOT ================= */
+    clientProjectDescription: {
       type: String,
-      required: true,
+      required: false,
     },
 
-    /* ================= SERVICE INFO ================= */
+    /* ================= ADMIN-EDITABLE SCOPE ================= */
+    projectDetails: {
+      type: String,
+      default: "",
+    },
+
+    /* ================= DOCUMENTS (ADMIN ONLY) ================= */
+    projectDocuments: [
+      {
+        name: { type: String, required: true },
+        url: { type: String, required: true },
+        publicId: { type: String, required: true },
+        uploadedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+
+    /* ================= SERVICE ================= */
     serviceType: {
       type: String,
       enum: [
@@ -56,7 +75,6 @@ const projectSchema = new mongoose.Schema(
       required: true,
     },
 
-    // Optional denormalized (for faster UI)
     developerName: {
       type: String,
       default: null,
@@ -64,21 +82,21 @@ const projectSchema = new mongoose.Schema(
 
     developerResponse: {
       type: String,
-      
+      enum: ["PENDING", "ACCEPTED", "REJECTED"],
       default: "PENDING",
     },
 
     /* ================= PROJECT STATUS ================= */
     projectStatus: {
       type: String,
-      
+      enum: ["ASSIGNED", "IN_PROGRESS", "COMPLETED", "REJECTED"],
       default: "ASSIGNED",
     },
 
     /* ================= PLANNING ================= */
     startDate: {
       type: Date,
-      default: Date.now,
+      default: null, // planned start
     },
 
     deadline: {
@@ -97,12 +115,22 @@ const projectSchema = new mongoose.Schema(
       default: null,
     },
 
-    /* ================= PROGRESS TRACKING ================= */
+    /* ================= EXECUTION ================= */
     progressPercentage: {
       type: Number,
       default: 0,
       min: 0,
       max: 100,
+    },
+
+    startedAt: {
+      type: Date,
+      default: null, // actual start
+    },
+
+    completedAt: {
+      type: Date,
+      default: null,
     },
 
     /* ================= NOTES ================= */
@@ -116,21 +144,10 @@ const projectSchema = new mongoose.Schema(
       default: null,
     },
 
-    /* ================= COMPLETION ================= */
-    startedAt: {
-      type: Date,
-      default: null,
-    },
-
-    completedAt: {
-      type: Date,
-      default: null,
-    },
-
     /* ================= AUDIT ================= */
     assignedBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Admin
+      ref: "User",
       required: true,
     },
 

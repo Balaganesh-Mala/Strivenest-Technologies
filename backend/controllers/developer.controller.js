@@ -7,30 +7,21 @@ export const getMyProjects = async (req, res) => {
     assignedDeveloper: req.user._id,
     isActive: true,
   })
-    .sort({ createdAt: -1 })
-    .select(
-      `
-      projectId
-      clientId
-      projectTitle
-      serviceType
-      projectStatus
-      developerResponse
-      progressPercentage
-      startDate
-      deadline
-      priority
-      remarks
-      createdAt
-      updatedAt
-      `
-    );
+    .populate("clientRequest", "projectDescription")
+    .sort({ createdAt: -1 });
+
+  const formatted = projects.map((p) => ({
+    ...p.toObject(),
+    clientProjectDescription:
+      p.clientRequest?.projectDescription || null,
+  }));
 
   res.json({
     success: true,
-    projects,
+    projects: formatted,
   });
 };
+
 
 /* ================= ACCEPT / REJECT PROJECT ================= */
 export const respondToProject = async (req, res) => {

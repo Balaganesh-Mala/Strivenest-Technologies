@@ -88,3 +88,26 @@ export const updateBlog = (id, data) => {
 export const deleteBlog = (id) => {
   return adminApi.delete(`/blogs/${id}`);
 };
+
+
+/* ================= PROJECT EDITOR ================= */
+
+// Update project details
+export const updateProjectDetails = (projectId, data) => {
+  return adminApi.put(`/projects/${projectId}/details`, data);
+};
+
+// Upload document
+export const uploadProjectDocument = (projectId, formData) => {
+  return adminApi.post(
+    `/projects/${projectId}/documents`,
+    formData
+  );
+};
+
+// Delete document
+export const deleteProjectDocument = (projectId, documentId) => {
+  return adminApi.delete(
+    `/projects/${projectId}/documents/${documentId}`
+  );
+};

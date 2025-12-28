@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import DeveloperProjectViewModal from "../../components/model/DeveloperProjectViewModal";
 import {
   fetchMyProjects,
   respondToProject,
@@ -10,6 +11,8 @@ import {
 export default function DeveloperProjects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   /* ================= LOAD PROJECTS ================= */
   const loadProjects = async () => {
@@ -183,12 +186,20 @@ export default function DeveloperProjects() {
                       style={{ width: `${p.progressPercentage}%` }}
                     />
                   </div>
-                  <div className="text-xs mt-1">
-                    {p.progressPercentage}%
-                  </div>
+                  <div className="text-xs mt-1">{p.progressPercentage}%</div>
                 </td>
 
                 <td className="px-4 py-3 space-x-2">
+                  <button
+                    onClick={() => {
+                      setSelectedProject(p);
+                      setViewOpen(true);
+                    }}
+                    className="btn-outline"
+                  >
+                    View
+                  </button>
+
                   {p.developerResponse === "PENDING" && (
                     <>
                       <button
@@ -203,7 +214,6 @@ export default function DeveloperProjects() {
                       >
                         Reject
                       </button>
-                      
                     </>
                   )}
 
@@ -250,10 +260,7 @@ export default function DeveloperProjects() {
       {/* ================= MOBILE VIEW ================= */}
       <div className="md:hidden space-y-4">
         {projects.map((p) => (
-          <div
-            key={p._id}
-            className="bg-white rounded-xl shadow p-4 space-y-2"
-          >
+          <div key={p._id} className="bg-white rounded-xl shadow p-4 space-y-2">
             <div className="font-semibold">{p.projectTitle}</div>
             <div className="text-xs text-gray-500">{p.projectId}</div>
 
@@ -292,6 +299,14 @@ export default function DeveloperProjects() {
           </div>
         ))}
       </div>
+      <DeveloperProjectViewModal
+        open={viewOpen}
+        project={selectedProject}
+        onClose={() => {
+          setViewOpen(false);
+          setSelectedProject(null);
+        }}
+      />
     </div>
   );
 }

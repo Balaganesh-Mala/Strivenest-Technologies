@@ -37,3 +37,12 @@ export const updateProgress = (id, data) =>
 export const completeProject = (id) =>
   developerApi.put(`/developer/projects/${id}/complete`);
 
+
+export const previewProjectPdf = (projectId, docId) =>
+  developerApi.get(
+    `/projects/${projectId}/documents/${docId}/download`,
+    {
+      responseType: "arraybuffer", // 🔥 THIS IS CRITICAL
+    }
+  );
+

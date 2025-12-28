@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import {
-  fetchEligibleDevelopers,
-  assignProject,
-} from "../../api/admin.api";
+import { fetchEligibleDevelopers, assignProject } from "../../api/admin.api";
 
 export default function AssignDeveloperModal({
   open,
@@ -28,15 +25,9 @@ export default function AssignDeveloperModal({
     if (!open || !request) return;
 
     fetchEligibleDevelopers(request.serviceType)
-      .then((res) =>
-        setDevelopers(res.data.developers || [])
-      )
+      .then((res) => setDevelopers(res.data.developers || []))
       .catch(() =>
-        Swal.fire(
-          "Error",
-          "Failed to load eligible developers",
-          "error"
-        )
+        Swal.fire("Error", "Failed to load eligible developers", "error")
       );
   }, [open, request]);
 
@@ -86,21 +77,13 @@ export default function AssignDeveloperModal({
         remarks: form.remarks,
       });
 
-      Swal.fire(
-        "Assigned 🎉",
-        "Developer assigned successfully",
-        "success"
-      );
+      Swal.fire("Assigned 🎉", "Developer assigned successfully", "success");
 
       onSuccess();
       onClose();
       setStep(1);
     } catch {
-      Swal.fire(
-        "Error",
-        "Failed to assign developer",
-        "error"
-      );
+      Swal.fire("Error", "Failed to assign developer", "error");
     } finally {
       setLoading(false);
     }
@@ -118,9 +101,7 @@ export default function AssignDeveloperModal({
           <h2 className="text-lg font-semibold text-slate-800">
             Assign Developer
           </h2>
-          <p className="text-xs text-gray-400">
-            Step {step} of 3
-          </p>
+          <p className="text-xs text-gray-400">Step {step} of 3</p>
 
           {/* STEP INDICATOR */}
           <div className="flex gap-2 mt-3">
@@ -128,9 +109,7 @@ export default function AssignDeveloperModal({
               <div
                 key={s}
                 className={`h-1 flex-1 rounded ${
-                  step >= s
-                    ? "bg-indigo-600"
-                    : "bg-gray-200"
+                  step >= s ? "bg-indigo-600" : "bg-gray-200"
                 }`}
               />
             ))}
@@ -142,15 +121,11 @@ export default function AssignDeveloperModal({
           {/* STEP 1 – DEVELOPER */}
           {step === 1 && (
             <>
-              <p className="text-sm font-medium">
-                Select Developer
-              </p>
+              <p className="text-sm font-medium">Select Developer</p>
 
               <select
                 value={selectedDev}
-                onChange={(e) =>
-                  setSelectedDev(e.target.value)
-                }
+                onChange={(e) => setSelectedDev(e.target.value)}
                 className="w-full border rounded-lg px-3 py-2 text-sm"
               >
                 <option value="">Choose developer</option>
@@ -158,9 +133,7 @@ export default function AssignDeveloperModal({
                   <option key={dev._id} value={dev._id}>
                     {dev.fullName} —{" "}
                     {dev.specializations
-                      .map((s) =>
-                        s.replace("_", " ")
-                      )
+                      .map((s) => s.replace("_", " "))
                       .join(", ")}
                   </option>
                 ))}
@@ -171,15 +144,11 @@ export default function AssignDeveloperModal({
           {/* STEP 2 – SCHEDULE */}
           {step === 2 && (
             <>
-              <p className="text-sm font-medium">
-                Schedule & Priority
-              </p>
+              <p className="text-sm font-medium">Schedule & Priority</p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="border rounded-xl p-3">
-                  <label className="text-xs text-gray-500">
-                    Start Date
-                  </label>
+                  <label className="text-xs text-gray-500">Start Date</label>
                   <input
                     type="date"
                     value={form.startDate}
@@ -194,9 +163,7 @@ export default function AssignDeveloperModal({
                 </div>
 
                 <div className="border rounded-xl p-3">
-                  <label className="text-xs text-gray-500">
-                    Deadline
-                  </label>
+                  <label className="text-xs text-gray-500">Deadline</label>
                   <input
                     type="date"
                     min={form.startDate || undefined}
@@ -223,9 +190,7 @@ export default function AssignDeveloperModal({
                 className="w-full border rounded-lg px-3 py-2 text-sm"
               >
                 <option value="Low">Low Priority</option>
-                <option value="Medium">
-                  Medium Priority
-                </option>
+                <option value="Medium">Medium Priority</option>
                 <option value="High">High Priority</option>
               </select>
             </>
@@ -234,30 +199,21 @@ export default function AssignDeveloperModal({
           {/* STEP 3 – REVIEW */}
           {step === 3 && (
             <>
-              <p className="text-sm font-medium">
-                Review & Confirm
-              </p>
+              <p className="text-sm font-medium">Review & Confirm</p>
 
               <div className="rounded-xl bg-slate-50 p-4 text-sm space-y-2">
                 <p>
                   <b>Developer:</b>{" "}
-                  {
-                    developers.find(
-                      (d) => d._id === selectedDev
-                    )?.fullName
-                  }
+                  {developers.find((d) => d._id === selectedDev)?.fullName}
                 </p>
                 <p>
-                  <b>Start:</b>{" "}
-                  {form.startDate || "—"}
+                  <b>Start:</b> {form.startDate || "—"}
                 </p>
                 <p>
-                  <b>Deadline:</b>{" "}
-                  {form.deadline || "—"}
+                  <b>Deadline:</b> {form.deadline || "—"}
                 </p>
                 <p>
-                  <b>Priority:</b>{" "}
-                  {form.priority}
+                  <b>Priority:</b> {form.priority}
                 </p>
               </div>
 
