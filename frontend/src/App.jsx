@@ -20,45 +20,22 @@ import WhatsAppButton from "./components/WhatsAppButton/WhatsAppButton.jsx";
 import ServiceDetails from "./pages/ServiceDetails/ServiceDetails.jsx";
 import TechnologyDetails from "./pages/TechnologyDetails/TechnologyDetails.jsx";
 
-// Admin Pages
-import AdminLogin from "./pages/AdminLogin/AdminLogin.jsx";
-import AdminRegister from "./pages/AdminRegister/AdminRegister.jsx";
-import Dashboard from "./AdminPages/Dashboard/Dashboard.jsx";
 
-// Developer Pages
-import DeveloperLogin from "./DeveloperPages/pages/Auth/Login.jsx";
-import DeveloperRegister from "./pages/DeveloperRegister/DeveloperRegister.jsx";
-import DeveloperDashboard from "./DeveloperPages/pages/Developer/DeveloperDashboard.jsx";
-import ProjectRequests from "./DeveloperPages/pages/Developer/ProjectRequests.jsx";
-import ProjectSummary from "./DeveloperPages/pages/Developer/ProjectSummary.jsx";
-import Notifications from "./DeveloperPages/pages/Developer/Notifications.jsx";
-import Help from "./DeveloperPages/pages/Developer/Help.jsx";
-import Settings from "./DeveloperPages/pages/Developer/Settings.jsx";
 
-import { getAuthToken } from "./DeveloperPages/api/apiClient.js";
 import { Toaster } from "react-hot-toast";
 
-const AdminPrivateRoute = ({ children }) => {
-  const token = localStorage.getItem("adminToken");
-  return token ? children : <Navigate to="/admin/login" replace />;
-};
 
-const DeveloperPrivateRoute = ({ children }) => {
-  const token = getAuthToken();
-  return token ? children : <Navigate to="/developer/login" replace />;
-};
+
+
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const isAdminPage = location.pathname.startsWith("/admin");
-  const isDeveloperPage = location.pathname.startsWith("/developer");
-
+  
   return (
     <>
-      {!isAdminPage && !isDeveloperPage && <Navbar />}
-      {!isAdminPage && !isDeveloperPage && <WhatsAppButton />}
+      
       {children}
-      {!isAdminPage && !isDeveloperPage && <Footer />}
+      
     </>
   );
 };
@@ -66,7 +43,7 @@ const Layout = ({ children }) => {
 const App = () => {
   return (
     <Router>
-      <Layout>
+      <Navbar/>
         <Routes>
           <Route
             path="/"
@@ -91,7 +68,8 @@ const App = () => {
         </Routes>
 
         <Toaster position="top-right" />
-      </Layout>
+        <WhatsAppButton/>
+      <Footer/>
     </Router>
   );
 };

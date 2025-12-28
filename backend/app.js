@@ -10,6 +10,7 @@ import adminAuthRoutes from "./routes/adminAuth.routes.js";
 import projectRoutes from "./routes/project.routes.js";
 import developerAuthRoutes from "./routes/developerAuth.routes.js";
 import testRoutes from "./routes/test.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
 
 
 
@@ -44,6 +45,7 @@ app.use("/api/developer", developerRoutes);
 app.use("/api/developer-auth", developerAuthRoutes);
 
 app.use("/", testRoutes);
+app.use("/api/blogs", blogRoutes);
 
 /* ================= ERROR HANDLER ================= */
 app.use((err, req, res, next) => {

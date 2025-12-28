@@ -13,7 +13,7 @@ function App() {
       <Route path="/*" element={<AdminRoutes />} />
       <Route
           path="/"
-          element={<Navigate to="/admin/login" replace />}
+          element={<Navigate to="/admin/dashboard" replace />}
         />
 
       {/* GLOBAL 404 */}

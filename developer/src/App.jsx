@@ -11,7 +11,7 @@ export default function App() {
         {/* Redirect root to developer login */}
         <Route
           path="/"
-          element={<Navigate to="/developer/login" replace />}
+          element={<Navigate to="/developer/dashboard" replace />}
         />
 
         {/* Developer Routes */}

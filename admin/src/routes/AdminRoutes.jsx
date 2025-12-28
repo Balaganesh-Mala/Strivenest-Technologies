@@ -5,6 +5,7 @@ import ProtectedRoute from "../components/layout/ProtectedRoute";
 import ClientRequests from "../pages/requests/ClientRequests";
 import Developers from "../pages/developers/Developers";
 import Projects from "../pages/projects/Projects";
+import BlogManager from "../pages/BlogManager";
 import NotFound from "../pages/NotFound";
 
 export default function AdminRoutes() {
@@ -26,6 +27,7 @@ export default function AdminRoutes() {
         <Route path="requests" element={<ClientRequests />} />
         <Route path="developers" element={<Developers />} />
         <Route path="projects" element={<Projects />} />
+        <Route path="blogs" element={<BlogManager/>}/>
 
         {/* ✅ ADMIN 404 */}
         <Route path="*" element={<NotFound />} />

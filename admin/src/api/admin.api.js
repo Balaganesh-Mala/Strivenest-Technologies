@@ -65,3 +65,26 @@ export const fetchAllProjects = () => {
 export const completeProject = (projectId) => {
   return adminApi.put(`/projects/${projectId}/complete`);
 };
+
+
+/* ================= BLOG MANAGEMENT ================= */
+
+// ✅ Get all blogs (Admin – includes Draft & Published)
+export const fetchAllBlogs = () => {
+  return adminApi.get("/blogs");
+};
+
+// ✅ Create new blog
+export const createBlog = (data) => {
+  return adminApi.post("/blogs", data);
+};
+
+// ✅ Update blog
+export const updateBlog = (id, data) => {
+  return adminApi.put(`/blogs/${id}`, data);
+};
+
+// ✅ Delete blog
+export const deleteBlog = (id) => {
+  return adminApi.delete(`/blogs/${id}`);
+};

@@ -14,6 +14,7 @@ export default function Dashboard() {
     total: 0,
     inProgress: 0,
     completed: 0,
+    pending:0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -28,7 +29,6 @@ export default function Dashboard() {
       const data = res.data.projects || [];
 
       setProjects(data);
-
       setStats({
         total: data.length,
         inProgress: data.filter(
@@ -37,6 +37,9 @@ export default function Dashboard() {
         completed: data.filter(
           (p) => p.projectStatus === "COMPLETED"
         ).length,
+        pending: data.filter(
+          (p)=> p.projectStatus === "ASSIGNED"
+        ).length
       });
     } catch (err) {
       console.error("Dashboard load failed", err);
@@ -49,8 +52,10 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="p-4 sm:p-6 space-y-6">
-        <div className="h-7 w-60 bg-gray-200 rounded animate-pulse" />
+        {/* Header skeleton */}
+        <div className="h-7 w-72 bg-gray-200 rounded animate-pulse" />
 
+        {/* Stats skeleton */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
             <div
@@ -60,7 +65,8 @@ export default function Dashboard() {
           ))}
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        {/* Main content skeleton */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 h-64 bg-gray-100 rounded-2xl animate-pulse" />
           <div className="h-64 bg-gray-100 rounded-2xl animate-pulse" />
         </div>
@@ -72,34 +78,36 @@ export default function Dashboard() {
     <div className="p-4 sm:p-6 space-y-6">
       {/* ================= HEADER ================= */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-        <h1 className="text-xl sm:text-2xl font-semibold text-slate-800">
-          Welcome back,{" "}
-          <span className="text-indigo-600">
-            {developer?.fullName}
-          </span>
-        </h1>
-
-        <p className="text-xs text-gray-400">
-          Overview of your current work
-        </p>
+        <div>
+          <h1 className="text-xl sm:text-2xl font-semibold text-slate-800">
+            Welcome back,{" "}
+            <span className="text-indigo-600">
+              {developer?.fullName}
+            </span>
+          </h1>
+          <p className="text-xs text-gray-400 mt-0.5">
+            Here’s a quick overview of your work
+          </p>
+        </div>
       </div>
 
       {/* ================= STATS ================= */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatsCard title="Total Projects" value={stats.total} />
+        <StatsCard title="Pending Request" value={stats.pending} />
         <StatsCard title="In Progress" value={stats.inProgress} />
         <StatsCard title="Completed" value={stats.completed} />
       </div>
 
       {/* ================= MAIN CONTENT ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* LEFT SIDE */}
+        {/* LEFT */}
         <div className="lg:col-span-2 space-y-6">
           <TaskTimeline projects={projects} />
           <ActiveProjectsTable projects={projects} />
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT */}
         <div className="space-y-6">
           <RecentActivity projects={projects} />
         </div>

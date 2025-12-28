@@ -9,7 +9,7 @@ import {
 export default function TaskTimeline({ projects = [] }) {
   const today = new Date();
 
-  /* ====== WEEK DAYS ====== */
+  /* ===== WEEK DAYS ===== */
   const days = useMemo(() => {
     const start = startOfWeek(today, { weekStartsOn: 1 });
     return Array.from({ length: 7 }, (_, i) =>
@@ -17,7 +17,7 @@ export default function TaskTimeline({ projects = [] }) {
     );
   }, [today]);
 
-  /* ====== ACTIVITY COUNT ====== */
+  /* ===== ACTIVITY COUNT ===== */
   const activity = useMemo(() => {
     const map = {};
     projects.forEach((p) => {
@@ -38,52 +38,54 @@ export default function TaskTimeline({ projects = [] }) {
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-800">
-          Weekly Workload
-        </h3>
-        <span className="text-xs text-gray-400">
-          Tasks per day
-        </span>
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-5">
+        <div>
+          <h3 className="font-semibold text-slate-800">
+            Weekly Workload
+          </h3>
+          <p className="text-xs text-gray-400">
+            Active projects per day
+          </p>
+        </div>
       </div>
 
-      {/* Chart */}
-      <div className="flex justify-between items-end gap-4">
+      {/* CHART */}
+      <div className="flex justify-between items-end gap-2 sm:gap-4">
         {days.map((day) => {
           const key = format(day, "EEE");
           const count = activity[key] || 0;
           const isToday = isSameDay(day, today);
 
-          const height = Math.min(count * 18 + 12, 110);
+          const height = Math.min(count * 18 + 14, 120);
 
           return (
             <div
               key={key}
-              className="flex flex-col items-center group"
+              className="flex flex-col items-center group w-full"
             >
-              {/* Bar */}
-              <div className="relative w-9 flex items-end justify-center">
+              {/* BAR */}
+              <div className="relative flex items-end justify-center w-full max-w-[36px] sm:max-w-[42px] h-[130px]">
                 <div
-                  className={`w-full rounded-lg transition-all duration-300 ${
+                  className={`w-full rounded-xl transition-all duration-300 ${
                     isToday
                       ? "bg-indigo-600"
                       : count
-                      ? "bg-blue-400"
+                      ? "bg-indigo-300"
                       : "bg-gray-200"
                   }`}
                   style={{ height }}
                 />
 
-                {/* Count bubble */}
+                {/* COUNT TOOLTIP */}
                 {count > 0 && (
-                  <span className="absolute -top-6 text-[10px] bg-slate-800 text-white px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">
+                  <span className="absolute -top-6 text-[10px] bg-slate-900 text-white px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">
                     {count}
                   </span>
                 )}
               </div>
 
-              {/* Day label */}
+              {/* DAY LABEL */}
               <span
                 className={`text-xs mt-2 ${
                   isToday
@@ -94,7 +96,7 @@ export default function TaskTimeline({ projects = [] }) {
                 {key}
               </span>
 
-              {/* Today badge */}
+              {/* TODAY BADGE */}
               {isToday && (
                 <span className="text-[10px] mt-0.5 text-indigo-500">
                   Today
@@ -105,9 +107,9 @@ export default function TaskTimeline({ projects = [] }) {
         })}
       </div>
 
-      {/* Footer note */}
+      {/* FOOTER NOTE */}
       <p className="text-xs text-gray-400 mt-4">
-        Shows active projects between start date and deadline
+        Based on project start date and deadline
       </p>
     </div>
   );

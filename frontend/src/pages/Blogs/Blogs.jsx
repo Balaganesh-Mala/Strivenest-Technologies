@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { ThreeDots } from "react-loader-spinner";
-import "./Blogs.css";
 
-const API = "http://localhost:5000/api/blogs";
+const API = `${import.meta.env.VITE_API_BASE_URL}/blogs`;
 
-const Blogs = () => {
+export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Fetch blogs when component mounts
+  /* ================= FETCH BLOGS ================= */
   useEffect(() => {
     fetchBlogs();
   }, []);
@@ -19,110 +18,138 @@ const Blogs = () => {
     setLoading(true);
     try {
       const res = await axios.get(API);
-      // ✅ Ensure backend returns { success: true, data: [...] }
-      if (res.data.success) {
-        setBlogs(res.data.data);
-      } else {
-        setBlogs([]);
-      }
+      setBlogs(res.data?.success ? res.data.data : []);
     } catch (err) {
-      console.error("Error fetching blogs:", err);
+      console.error("Failed to fetch blogs", err);
       setBlogs([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <section id="blogs" className="blogs-section">
-      <h2 className="blogs-title">Our Latest Blogs</h2>
+  /* ================= LOADER ================= */
+  if (loading) {
+    return (
+      <section className="min-h-[60vh] flex items-center justify-center">
+        <ThreeDots
+          height="70"
+          width="70"
+          radius="9"
+          color="#4f46e5"
+          ariaLabel="loading"
+          visible
+        />
+      </section>
+    );
+  }
 
-      {/* ✅ Loader */}
-      {loading ? (
-        <div className="loader-container">
-          <ThreeDots
-            height="70"
-            width="70"
-            radius="9"
-            color="#007bff"
-            ariaLabel="three-dots-loading"
-            visible={true}
-          />
+  return (
+    <section className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        {/* HEADER */}
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800">
+            Our Latest Blogs
+          </h2>
+          <p className="text-sm text-gray-500 mt-2">
+            Insights, updates & tech knowledge
+          </p>
         </div>
-      ) : !selectedBlog ? (
-        // ✅ Blog Grid
-        <div className="blogs-grid">
-          {blogs.length === 0 ? (
-            <div className="no-data">
+
+        {/* ================= BLOG LIST ================= */}
+        {!selectedBlog ? (
+          blogs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400">
               <img
                 src="https://ik.imagekit.io/izqq5ffwt/ChatGPT%20Image%20Nov%201,%202025,%2010_36_03%20PM.png"
-                alt="No Blogs"
+                alt="No blogs"
+                className="w-56 mb-4 opacity-80"
               />
-              <p>No blogs available</p>
+              <p className="text-sm">No blogs available</p>
             </div>
           ) : (
-            blogs.map((blog) => (
-              <div key={blog._id} className="blog-card">
-                <img
-                  src={
-                    blog.image ||
-                    "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
-                  }
-                  alt={blog.title}
-                  className="blog-image"
-                />
-                <div className="blog-content">
-                  <h3>{blog.title}</h3>
-                  <p className="blog-date">
-                    {new Date(blog.createdAt).toLocaleDateString("en-IN", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <p className="blog-desc">
-                    {blog.content.length > 120
-                      ? blog.content.substring(0, 120) + "..."
-                      : blog.content}
-                  </p>
-                  <button
-                    onClick={() => setSelectedBlog(blog)}
-                    className="read-more"
-                  >
-                    Read More →
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      ) : (
-        // ✅ Blog Detail View
-        <div className="blog-detail">
-          <button className="back-btn" onClick={() => setSelectedBlog(null)}>
-            ← Back to Blogs
-          </button>
-          <img
-            src={
-              selectedBlog.image ||
-              "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
-            }
-            alt={selectedBlog.title}
-            className="detail-image"
-          />
-          <h2>{selectedBlog.title}</h2>
-          <p className="blog-date">
-            {new Date(selectedBlog.createdAt).toLocaleDateString("en-IN", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-          <p className="blog-full-content">{selectedBlog.content}</p>
-        </div>
-      )}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {blogs.map((blog) => (
+                <article
+                  key={blog._id}
+                  className="group bg-white rounded-2xl shadow-sm border overflow-hidden hover:shadow-md transition"
+                >
+                  {/* IMAGE */}
+                  <img
+                    src={
+                      blog.image ||
+                      "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
+                    }
+                    alt={blog.title}
+                    className="h-48 w-full object-cover group-hover:scale-105 transition duration-300"
+                  />
+
+                  {/* CONTENT */}
+                  <div className="p-5 space-y-2">
+                    <h3 className="font-semibold text-slate-800 line-clamp-2">
+                      {blog.title}
+                    </h3>
+
+                    <p className="text-xs text-gray-400">
+                      {new Date(blog.createdAt).toLocaleDateString("en-IN", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+
+                    <p className="text-sm text-gray-600 line-clamp-3">
+                      {blog.content}
+                    </p>
+
+                    <button
+                      onClick={() => setSelectedBlog(blog)}
+                      className="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline"
+                    >
+                      Read more →
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )
+        ) : (
+          /* ================= BLOG DETAIL ================= */
+          <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-sm border p-6 sm:p-8">
+            <button
+              onClick={() => setSelectedBlog(null)}
+              className="mb-4 text-sm text-indigo-600 hover:underline"
+            >
+              ← Back to Blogs
+            </button>
+
+            <img
+              src={
+                selectedBlog.image ||
+                "https://ik.imagekit.io/izqq5ffwt/default-blog.jpg"
+              }
+              alt={selectedBlog.title}
+              className="w-full h-64 object-cover rounded-xl mb-6"
+            />
+
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-800 mb-2">
+              {selectedBlog.title}
+            </h1>
+
+            <p className="text-xs text-gray-400 mb-6">
+              {new Date(selectedBlog.createdAt).toLocaleDateString("en-IN", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+
+            <div className="prose prose-slate max-w-none text-sm sm:text-base">
+              {selectedBlog.content}
+            </div>
+          </div>
+        )}
+      </div>
     </section>
   );
-};
-
-export default Blogs;
+}

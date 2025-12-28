@@ -4,6 +4,7 @@ import {
   ClipboardList,
   FolderKanban,
   Users,
+  FileText,
   Settings,
 } from "lucide-react";
 
@@ -30,6 +31,11 @@ const AdminSidebar = ({ open, setOpen }) => {
       name: "Developers",
       path: "/admin/developers",
       icon: Users,
+    },
+    {
+      name: "Blogs",
+      path: "/admin/blogs",
+      icon: FileText,
     },
     {
       name: "Settings",

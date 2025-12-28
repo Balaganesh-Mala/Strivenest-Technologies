@@ -2,6 +2,7 @@ import {
   FaClipboardList,
   FaSpinner,
   FaCheckCircle,
+  FaHourglassHalf,
 } from "react-icons/fa";
 
 const statsConfig = {
@@ -11,14 +12,20 @@ const statsConfig = {
     iconColor: "text-indigo-600",
     border: "border-indigo-100",
   },
+  "Pending Request": {
+    icon: FaHourglassHalf,
+    iconBg: "bg-yellow-100",
+    iconColor: "text-yellow-600",
+    border: "border-yellow-100",
+  },
   "In Progress": {
     icon: FaSpinner,
     iconBg: "bg-blue-100",
     iconColor: "text-blue-600",
     border: "border-blue-100",
-    spin: true,
+    spin: false,
   },
-  "Completed": {
+  Completed: {
     icon: FaCheckCircle,
     iconBg: "bg-green-100",
     iconColor: "text-green-600",
@@ -34,20 +41,20 @@ export default function StatsCard({ title, value }) {
 
   return (
     <div
-      className={`group relative bg-white rounded-2xl border ${config.border} shadow-sm p-5 w-full sm:w-[240px] transition hover:shadow-md`}
+      className={`group relative bg-white rounded-2xl border ${config.border}
+      shadow-sm p-5 w-full transition hover:shadow-md`}
     >
-      {/* Title */}
+      {/* TITLE */}
       <p className="text-sm text-gray-500 mb-1">
         {title}
       </p>
 
-      {/* Value */}
-      <div className="flex items-end justify-between">
+      {/* VALUE + ICON */}
+      <div className="flex items-center justify-between">
         <p className="text-3xl font-semibold text-slate-800">
           {value}
         </p>
 
-        {/* Icon */}
         <div
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${config.iconBg}`}
         >
@@ -59,8 +66,12 @@ export default function StatsCard({ title, value }) {
         </div>
       </div>
 
-      {/* Hover accent */}
-      <div className="absolute inset-x-0 bottom-0 h-1 rounded-b-2xl bg-gradient-to-r from-transparent via-gray-200 to-transparent opacity-0 group-hover:opacity-100 transition" />
+      {/* HOVER ACCENT */}
+      <div
+        className={`absolute inset-x-0 bottom-0 h-1 rounded-b-2xl
+        bg-gradient-to-r from-transparent via-slate-200 to-transparent
+        opacity-0 group-hover:opacity-100 transition`}
+      />
     </div>
   );
 }

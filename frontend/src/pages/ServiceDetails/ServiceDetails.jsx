@@ -1,8 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Footer from "../Footer/Footer.jsx";
 import FAQ from "../FAQ/FAQ.jsx";
-import "./ServiceDetails.css";
+
 
 const serviceData = {
   web: {
@@ -142,68 +141,107 @@ const ServiceDetails = () => {
 
   if (!service) {
     return (
-      <div className="service-not-found">
-        <h2>Service Not Found</h2>
-        <p>The requested service does not exist.</p>
-        <button onClick={() => navigate("/services")}>Back to Services</button>
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+        <div className="bg-white p-8 rounded-2xl shadow max-w-md text-center">
+          <h2 className="text-2xl font-semibold text-slate-800 mb-2">
+            Service Not Found
+          </h2>
+          <p className="text-sm text-gray-500 mb-6">
+            The requested service does not exist.
+          </p>
+          <button
+            onClick={() => navigate("/services")}
+            className="px-6 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition"
+          >
+            Back to Services
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <section className="service-details">
-      <div className="service-banner">
+    <section className="bg-white">
+      {/* ================= HERO / BANNER ================= */}
+      <div className="relative h-[320px] md:h-[420px]">
         <img
           src={service.banner}
           alt={service.title}
-          className="service-banner-img"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="service-banner-content">
-          <h1>{service.title}</h1>
-          <p>{service.content.overview}</p>
+        <div className="absolute inset-0 bg-black/50" />
+
+        <div className="relative z-10 h-full flex items-center">
+          <div className="max-w-6xl mx-auto px-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              {service.title}
+            </h1>
+            <p className="max-w-2xl text-sm md:text-base text-gray-200 leading-relaxed">
+              {service.content.overview}
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="service-detail-container">
-        <div className="service-section">
-          <h2>Overview</h2>
-          <p>{service.content.overview}</p>
-        </div>
+      {/* ================= CONTENT ================= */}
+      <div className="max-w-6xl mx-auto px-6 py-14 space-y-14">
+        {/* SECTION */}
+        <Section title="How We Work">
+          {service.content.howWeWork}
+        </Section>
 
-        <div className="service-section">
-          <h2>How We Work</h2>
-          <p>{service.content.howWeWork}</p>
-        </div>
+        <Section title="Benefits">
+          {service.content.benefits}
+        </Section>
 
-        <div className="service-section">
-          <h2>Benefits</h2>
-          <p>{service.content.benefits}</p>
-        </div>
+        <Section title="Our Process">
+          {service.content.process}
+        </Section>
 
-        <div className="service-section">
-          <h2>Our Process</h2>
-          <p>{service.content.process}</p>
-        </div>
+        <Section title="Future Vision">
+          {service.content.futureVision}
+        </Section>
 
-        <div className="service-section">
-          <h2>Future Vision</h2>
-          <p>{service.content.futureVision}</p>
-        </div>
+        {/* HIGHLIGHTS */}
+        <div>
+          <h2 className="text-2xl font-semibold text-slate-800 mb-6">
+            Key Highlights
+          </h2>
 
-        <div className="service-section">
-          <h2>Key Highlights</h2>
-          <ul className="service-list">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {service.content.highlights.map((item, index) => (
-              <li key={index}>{item}</li>
+              <div
+                key={index}
+                className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 border hover:bg-slate-100 transition"
+              >
+                <span className="h-2 w-2 rounded-full bg-indigo-600" />
+                <p className="text-sm text-slate-700">{item}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
 
+      {/* FAQ */}
       <FAQ />
-      <Footer />
+
+      
     </section>
   );
 };
+
+/* ================= REUSABLE SECTION ================= */
+function Section({ title, children }) {
+  return (
+    <div>
+      <h2 className="text-2xl font-semibold text-slate-800 mb-4">
+        {title}
+      </h2>
+      <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-4xl">
+        {children}
+      </p>
+    </div>
+  );
+}
 
 export default ServiceDetails;

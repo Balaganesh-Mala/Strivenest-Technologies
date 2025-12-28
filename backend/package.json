@@ -9,10 +9,14 @@
   "main": "server.js",
   
   "scripts": {
+  
+    
   "start": "node server.js",
+  
+    
   "dev": "nodemon server.js"
-},
-
+  
+  },
   
   "author": "",
   
@@ -27,6 +31,9 @@
   
     
   "body-parser": "^2.2.0",
+  
+    
+  "cloudinary": "^2.8.0",
   
     
   "cookie-parser": "^1.4.7",
@@ -48,6 +55,9 @@
   
     
   "morgan": "^1.10.1",
+  
+    
+  "multer": "^2.0.2",
   
     
   "nodemailer": "^7.0.12",
